@@ -1174,6 +1174,7 @@ select.input { color:#000; }
 														<!-- <th style="padding: 5px 10px!important;">IC No</th> -->
 														<th style="padding: 5px 10px!important;">Mobile</th>
 														<th colspan="4" style="padding: 5px 10px!important;">Payment Mode</th>
+														<th style="padding: 5px 10px!important;text-align:right;">Application Fee (S$)</th>
 														<th style="padding: 5px 10px!important;text-align:right;">Amount (S$)</th>
 													</tr>
 												</thead>
@@ -1181,6 +1182,8 @@ select.input { color:#000; }
 													<?php
 													$mem_i = 1;
 													foreach ($member_details as $member_detail) {
+														// payment = base membership fee only; use total_amount (fee included) for actual cash collected.
+														$member_detail['payment'] = $member_detail['total_amount'] ?? $member_detail['payment'];
 														$member_total += floatval($member_detail['payment']);
 														$memberTypeName = $member_detail['member_type_name'];
 
@@ -1211,6 +1214,9 @@ select.input { color:#000; }
 															<td style="padding: 5px 10px!important;"><?php echo $member_detail['mobile']; ?></td>
 															<td colspan="4" style="padding: 5px 10px!important;"><?php echo $member_detail['paymentmode']; ?></td>
 															<td style="padding: 5px 10px!important;text-align:right;">
+																<?php echo number_format($member_detail['application_fee'] ?? 0, 2); ?>
+															</td>
+															<td style="padding: 5px 10px!important;text-align:right;">
 																<?php echo number_format($member_detail['payment'], 2); ?>
 															</td>
 														</tr>
@@ -1221,7 +1227,7 @@ select.input { color:#000; }
 												</tbody>
 												<tfoot>
 													<tr>
-														<td colspan="7">&nbsp;</td>
+														<td colspan="8">&nbsp;</td>
 														<td colspan="4" style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
 															<?php echo number_format($member_total, 2); ?>
 														</td>

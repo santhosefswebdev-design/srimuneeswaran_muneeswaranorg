@@ -68,6 +68,7 @@ table td, table th { padding:5px; text-align:center; }
 			{
                 $total = 0; $i=1;
                 foreach($member_data as $row) { 
+                    $row['payment'] = !empty($row['renewal_amount']) ? $row['renewal_amount'] : $row['payment'];
                     $amt = number_format((float)$row['payment'], 2, '.', '');
                     ?>
                 <tr>

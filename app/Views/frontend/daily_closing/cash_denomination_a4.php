@@ -1062,7 +1062,8 @@ select.input { color:#000; }
 										// Aggregate member registration payments into summary_total
 										if (!empty($member_details)) {
 											foreach ($member_details as $member_detail) {
-												$member_payment = floatval($member_detail['payment']);
+												// payment = base membership fee only; use total_amount (fee included) for actual cash collected.
+												$member_payment = floatval($member_detail['total_amount'] ?? $member_detail['payment']);
 												$member_paymentmode = $member_detail['paymentmode'];
 
 												if (empty($summary_total['sales'][$member_paymentmode])) {

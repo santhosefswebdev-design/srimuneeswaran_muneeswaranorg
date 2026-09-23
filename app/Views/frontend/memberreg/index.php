@@ -255,8 +255,8 @@
 
                             <div class="col-sm-4">
                               <div class="form-group"><label class="form-label">Amount</label>
-                                <input type="number" step="0.1" readonly id="member_amount" class="form-control"
-                                  step=".01">
+                                <input type="number" step="0.1" readonly id="payment" name="payment"
+                                  class="form-control" step=".01" required>
                               </div>
                               <div class="form-group"><label class="form-label">Application Fee</label>
                                 <input type="number" step="0.1" readonly id="application_fee" name="application_fee"
@@ -265,7 +265,7 @@
                               <div class="form-group">
                                 <h4 style="margin-bottom:5px; margin-top:5px; color:#FFFFFF; background:#d4aa00;">Total
                                   Amount</h4>
-                                <input type="number" step="0.1" readonly id="payment" name="payment"
+                                <input type="number" step="0.1" readonly id="total_amount" name="total_amount"
                                   class="form-control" step=".01"
                                   style="margin-top:20px;font-weight:bold;font-size: 36px;text-align: center;" required>
                               </div>
@@ -418,9 +418,9 @@
           obj = jQuery.parseJSON(data);
           var amount = parseFloat(obj.amount) || 0;
           var fee = parseFloat(obj.application_fee) || 0;
-          $("#member_amount").val(amount.toFixed(2));
+          $("#payment").val(amount.toFixed(2));
           $("#application_fee").val(fee.toFixed(2));
-          $("#payment").val((amount + fee).toFixed(2));
+          $("#total_amount").val((amount + fee).toFixed(2));
         }
       });
     });

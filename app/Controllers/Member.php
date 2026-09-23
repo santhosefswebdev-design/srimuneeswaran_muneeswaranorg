@@ -125,6 +125,7 @@ class Member extends BaseController
 		if (empty($id)) {
 			// Application fee is a one-time charge at initial registration only (not on renewal/edit).
 			$data['application_fee'] = !empty($_POST['application_fee']) ? trim($_POST['application_fee']) : 0.00;
+			$data['total_amount'] = (float) $data['payment'] + (float) $data['application_fee'];
 			$query = $this->db->query("select max(member_no) as member_no from member")->getRowArray();
 			$data['member_no'] = sprintf("%06d", (((float) substr($query['member_no'], -5)) + 1));
 			$data['created'] = date('Y-m-d H:i:s');
@@ -172,6 +173,10 @@ class Member extends BaseController
 			$data['added_by'] = $this->session->get('log_id');
 			$data['payment_status'] = 2;
 			$data['payment_mode'] = trim($_POST['paymentmode']);
+			// Renewals don't charge the one-time application fee, only the membership amount.
+			$data['payment'] = !empty($_POST['payment']) ? trim($_POST['payment']) : 0.00;
+			$data['application_fee'] = 0.00;
+			$data['total_amount'] = (float) $data['payment'];
 			$data['modified'] = date('Y-m-d H:i:s');
 			$res = $this->db->table('member')->where('id', $id)->update($data);
 			if ($res) {
@@ -179,6 +184,8 @@ class Member extends BaseController
 				$renewal_data['member_id'] = $id;
 				$renewal_data['renewal_start_date'] = date("Y-m-d");
 				$renewal_data['renewal_end_date'] = $endDate;
+				$renewal_data['amount'] = $data['payment'];
+				$renewal_data['payment_mode'] = $data['payment_mode'];
 				$this->db->table('member_renewal')->insert($renewal_data);
 
 				$this->account_migration($id,$content="Member Renewal");
@@ -229,8 +236,9 @@ class Member extends BaseController
 			$led_ins1 = $this->db->table('ledgers')->insert($led1);
 			$dr_id = $this->db->insertID();
 		}
-		if(!empty($member_datas['payment'])){
-			$number = $this->db->table('entries')->select('number')->where('entrytype_id',1)->orderBy('id','desc')->get()->getRowArray(); 
+		$member_collected = !empty($member_datas['total_amount']) ? $member_datas['total_amount'] : $member_datas['payment'];
+		if(!empty($member_collected)){
+			$number = $this->db->table('entries')->select('number')->where('entrytype_id',1)->orderBy('id','desc')->get()->getRowArray();
 			if(empty($number)) {
 				$num = 1;
 			} else {
@@ -240,13 +248,13 @@ class Member extends BaseController
 			$mon= date('m',strtotime($member_datas['date'])) ;
 			$qry   = $this->db->query("SELECT entry_code FROM entries where id=(select max(id) from entries where year (date)='". $yr ."' and entrytype_id =1 and month (date)='". $mon ."')")->getRowArray();
 			$entries['entry_code'] = 'REC' .date('y',strtotime($member_datas['date'])).$mon. (sprintf("%05d",(((float)  substr($qry['entry_code'],-5))+1)));
-			
+
 			$entries['entrytype_id'] = '1';
 			$entries['number'] 		 = $num;
 			$entries['date'] 		 = $member_datas['start_date'];
-							
-			$entries['dr_total'] 	 = $member_datas['payment'];
-			$entries['cr_total'] 	 = $member_datas['payment'];	
+
+			$entries['dr_total'] 	 = $member_collected;
+			$entries['cr_total'] 	 = $member_collected;
 			$entries['narration'] 	 = $content;
 			$entries['inv_id']		 = $member_id;
 			$entries['type']		 = '11';
@@ -255,15 +263,15 @@ class Member extends BaseController
 			if(!empty($en_id) ){
 				$eitems_d['entry_id'] = $en_id;
 				$eitems_d['ledger_id'] = $dr_id;
-				$eitems_d['amount'] = $member_datas['payment'];
+				$eitems_d['amount'] = $member_collected;
 				$eitems_d['dc'] = 'C';
 				$this->db->table('entryitems')->insert($eitems_d);
 
 				$eitems_c['entry_id'] = $en_id;
 				$eitems_c['ledger_id'] = $payment_mode_details['ledger_id'];
-				$eitems_c['amount'] = $member_datas['payment'];
+				$eitems_c['amount'] = $member_collected;
 				$eitems_c['dc'] = 'D';
-				$this->db->table('entryitems')->insert($eitems_c);				
+				$this->db->table('entryitems')->insert($eitems_c);
 			}
 			return true;
 		}else return false;
@@ -312,7 +320,7 @@ class Member extends BaseController
 		$qry = $this->db->table('member', 'member_type.name as tname')
 						->join('member_type', 'member_type.id = member.member_type')
 						->join('member_renewal', 'member_renewal.member_id = member.id')
-						->select('member_type.name as tname,member_renewal.renewal_end_date,member_renewal.renewal_start_date')
+						->select('member_type.name as tname,member_renewal.renewal_end_date,member_renewal.renewal_start_date,member_renewal.amount as renewal_amount')
 						->select('member.*')
 						->where('member_renewal.renewal_start_date >=',$fdata)
 						->where('member_renewal.renewal_start_date <=',$tdata);
@@ -328,7 +336,7 @@ class Member extends BaseController
 					$r['tname'],
 					date('d/m/Y', strtotime($r['renewal_start_date'])),
 					date('d/m/Y', strtotime($r['renewal_end_date'])),
-					$r['payment']
+					!empty($r['renewal_amount']) ? $r['renewal_amount'] : $r['payment']
 				);
 			}
 		}
@@ -356,7 +364,7 @@ class Member extends BaseController
 		$qry = $this->db->table('member', 'member_type.name as tname')
 						->join('member_type', 'member_type.id = member.member_type')
 						->join('member_renewal', 'member_renewal.member_id = member.id')
-						->select('member_type.name as tname,member_renewal.renewal_end_date,member_renewal.renewal_start_date')
+						->select('member_type.name as tname,member_renewal.renewal_end_date,member_renewal.renewal_start_date,member_renewal.amount as renewal_amount')
 						->select('member.*')
 						->where('member_renewal.renewal_start_date >=',$fdata)
 						->where('member_renewal.renewal_start_date <=',$tdata);

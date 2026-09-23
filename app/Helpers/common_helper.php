@@ -1891,7 +1891,7 @@ function daily_member_withcurrentdate($current_date, $current_date_two, $booking
 		->join('payment_mode as pm', 'pm.id = m.payment_mode', 'left')
 		->join('member_payment_gateway_datas as mpgd', 'mpgd.member_id = m.id', 'left')
 		->join('member_type as mt', 'mt.id = m.member_type', 'left')
-		->select("m.id as member_id, m.name, m.member_no, mt.name as member_type_name, m.ic_no, m.mobile, m.email_address, m.start_date, m.end_date, m.payment, (case when m.paid_through = 'DIRECT' then pm.name else mpgd.pay_method end) as paymentmode, m.paid_through, m.status")
+		->select("m.id as member_id, m.name, m.member_no, mt.name as member_type_name, m.ic_no, m.mobile, m.email_address, m.start_date, m.end_date, m.payment, m.application_fee, m.total_amount, (case when m.paid_through = 'DIRECT' then pm.name else mpgd.pay_method end) as paymentmode, m.paid_through, m.status")
 		->where("DATE_FORMAT(m.created, '%Y-%m-%d') >=", $current_date)
 		->where("DATE_FORMAT(m.created, '%Y-%m-%d') <=", $current_date_two)
 		->groupStart()

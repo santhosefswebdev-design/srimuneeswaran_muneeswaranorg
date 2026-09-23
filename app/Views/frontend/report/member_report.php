@@ -305,13 +305,7 @@
 				{ "data": "member_no" },
 				{ "data": "address", "defaultContent": "-" },
 				{ "data": null, "render": function(data, type, row) {
-					var fee = parseFloat(row.application_fee) || 0;
-					var html = 'Membership: ' + parseFloat(row.payment - fee).toFixed(2);
-					if (fee > 0) {
-						html += '<br>Application Fee: ' + fee.toFixed(2);
-					}
-					html += '<br><strong>Total: ' + parseFloat(row.payment || 0).toFixed(2) + '</strong>';
-					return html;
+					return parseFloat(row.total_amount || row.payment || 0).toFixed(2);
 				}},
 				{ "data": "status", "render": function(data, type, row) {
 					return data == 1 ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>';

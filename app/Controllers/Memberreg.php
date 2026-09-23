@@ -103,6 +103,7 @@ class Memberreg extends BaseController
 		}
 		$data['payment'] = trim($_POST['payment']);
 		$data['application_fee'] = !empty($_POST['application_fee']) ? trim($_POST['application_fee']) : 0.00;
+		$data['total_amount'] = (float) $data['payment'] + (float) $data['application_fee'];
 		$pay_method = !empty($_POST['pay_method']) ? trim($_POST['pay_method']) : 'cash';
 		$data['added_by'] = $this->session->get('log_id_frend');
 		$data['paid_through'] = "COUNTER";
@@ -210,7 +211,8 @@ class Memberreg extends BaseController
 			$led_ins1 = $this->db->table('ledgers')->insert($led1);
 			$dr_id = $this->db->insertID();
 		}
-		if (!empty($member_datas['payment'])) {
+		$member_collected = !empty($member_datas['total_amount']) ? $member_datas['total_amount'] : $member_datas['payment'];
+		if (!empty($member_collected)) {
 			$number = $this->db->table('entries')->select('number')->where('entrytype_id', 1)->orderBy('id', 'desc')->get()->getRowArray();
 			if (empty($number)) {
 				$num = 1;
@@ -226,8 +228,8 @@ class Memberreg extends BaseController
 			$entries['number'] = $num;
 			$entries['date'] = $member_datas['start_date'];
 
-			$entries['dr_total'] = $member_datas['payment'];
-			$entries['cr_total'] = $member_datas['payment'];
+			$entries['dr_total'] = $member_collected;
+			$entries['cr_total'] = $member_collected;
 			$entries['narration'] = 'Member Registration';
 			$entries['inv_id'] = $member_id;
 			$entries['type'] = '11';
@@ -236,13 +238,13 @@ class Memberreg extends BaseController
 			if (!empty($en_id)) {
 				$eitems_d['entry_id'] = $en_id;
 				$eitems_d['ledger_id'] = $dr_id;
-				$eitems_d['amount'] = $member_datas['payment'];
+				$eitems_d['amount'] = $member_collected;
 				$eitems_d['dc'] = 'C';
 				$this->db->table('entryitems')->insert($eitems_d);
 
 				$eitems_c['entry_id'] = $en_id;
 				$eitems_c['ledger_id'] = $payment_mode_details['ledger_id'];
-				$eitems_c['amount'] = $member_datas['payment'];
+				$eitems_c['amount'] = $member_collected;
 				$eitems_c['dc'] = 'D';
 				$this->db->table('entryitems')->insert($eitems_c);
 			}

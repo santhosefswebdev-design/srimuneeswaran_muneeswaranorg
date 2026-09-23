@@ -4334,7 +4334,7 @@ public function kattalai_abishegam_report() {
 		$data = [];
 
 		$dat = $this->db->table('member as m')
-			->select('m.id, m.name, m.member_no, m.email_address, m.mobile, m.address, m.ic_no, m.created, m.status, m.payment, m.application_fee')
+			->select('m.id, m.name, m.member_no, m.email_address, m.mobile, m.address, m.ic_no, m.created, m.status, m.payment, m.application_fee, m.total_amount')
 			->where('DATE_FORMAT(m.created, "%Y-%m-%d") >=', $fdt)
 			->where('DATE_FORMAT(m.created, "%Y-%m-%d") <=', $tdt);
 
@@ -4367,7 +4367,8 @@ public function kattalai_abishegam_report() {
 				'address' => $address,
 				'status' => $row['status'],
 				'payment' => $row['payment'],
-				'application_fee' => $row['application_fee']
+				'application_fee' => $row['application_fee'],
+				'total_amount' => $row['total_amount']
 			);
 		}
 
@@ -4457,7 +4458,7 @@ public function kattalai_abishegam_report() {
 
 		$data = [];
 		$dat = $this->db->table('member as m')
-			->select('m.id, m.name, m.member_no, m.email_address, m.mobile, m.address, m.ic_no, m.created, m.status, m.payment, m.application_fee')
+			->select('m.id, m.name, m.member_no, m.email_address, m.mobile, m.address, m.ic_no, m.created, m.status, m.payment, m.application_fee, m.total_amount')
 			->where('DATE_FORMAT(m.created, "%Y-%m-%d") >=', $fdt)
 			->where('DATE_FORMAT(m.created, "%Y-%m-%d") <=', $tdt);
 

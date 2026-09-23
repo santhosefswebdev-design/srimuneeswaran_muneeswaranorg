@@ -1003,6 +1003,8 @@ if (count($member_details) > 0) {
 		</tr>
 		<?php
 		foreach ($member_details as $member_detail) {
+			// payment = base membership fee only; use total_amount (fee included) for actual cash collected.
+			$member_detail['payment'] = $member_detail['total_amount'] ?? $member_detail['payment'];
 			$member_total += floatval($member_detail['payment']);
 			$memberTypeName = $member_detail['member_type_name'];
 
@@ -1037,6 +1039,11 @@ if (count($member_details) > 0) {
 					<p style="margin:2px 0px;font-size:10px;font-weight:bold;">
 						<?php echo number_format($member_detail['payment'], 2); ?>
 					</p>
+					<?php if (!empty($member_detail['application_fee'])) { ?>
+					<p style="margin:0px;font-size:8px;">
+						(incl. fee <?php echo number_format($member_detail['application_fee'], 2); ?>)
+					</p>
+					<?php } ?>
 				</td>
 			</tr>
 			<?php

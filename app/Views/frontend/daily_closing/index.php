@@ -1594,6 +1594,7 @@ $summary_total['offering'] = array();
 															<th style="padding: 5px 10px!important;">IC No</th>
 															<th style="padding: 5px 10px!important;">Mobile</th>
 															<th style="padding: 5px 10px!important;">Payment Mode</th>
+															<th style="padding: 5px 10px!important;text-align:right;">Application Fee (S$)</th>
 															<th style="padding: 5px 10px!important;text-align:right;">Amount (S$)</th>
 														</tr>
 													</thead>
@@ -1601,6 +1602,8 @@ $summary_total['offering'] = array();
 														<?php
 														$mem_i = 1;
 														foreach ($member_details as $member_detail) {
+															// payment = base membership fee only; use total_amount (fee included) for actual cash collected.
+															$member_detail['payment'] = $member_detail['total_amount'] ?? $member_detail['payment'];
 															$member_total += floatval($member_detail['payment']);
 
 															$memberTypeName = $member_detail['member_type_name'];
@@ -1646,6 +1649,9 @@ $summary_total['offering'] = array();
 																	<?php echo $member_detail['paymentmode']; ?>
 																</td>
 																<td style="padding: 5px 10px!important;text-align:right;">
+																	<?php echo number_format($member_detail['application_fee'] ?? 0, 2); ?>
+																</td>
+																<td style="padding: 5px 10px!important;text-align:right;">
 																	<?php echo number_format($member_detail['payment'], 2); ?>
 																</td>
 															</tr>
@@ -1656,7 +1662,7 @@ $summary_total['offering'] = array();
 													</tbody>
 													<tfoot>
 														<tr>
-															<td colspan="7">&nbsp;</td>
+															<td colspan="8">&nbsp;</td>
 															<td style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
 																<?php echo number_format($member_total, 2); ?>
 															</td>
