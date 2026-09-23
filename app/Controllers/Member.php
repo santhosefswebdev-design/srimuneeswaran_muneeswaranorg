@@ -106,7 +106,6 @@ class Member extends BaseController
 		}
 
 		$data['address'] = trim($_POST['address']);
-		$data['joining_date'] = trim($_POST['start_date']);
 		$data['start_date'] = trim($_POST['start_date']);
 		// $data['end_date'] = date('Y-m-d', strtotime(trim($_POST['end_date'])));
 		//ip location and ip details

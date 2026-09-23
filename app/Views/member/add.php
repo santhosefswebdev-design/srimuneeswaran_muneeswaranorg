@@ -210,18 +210,16 @@ if($edit == true){
                                         </div>
                                     </div>
                                     <div style="clear:both"></div>
-                                    <?php if ($edit != true) { ?>
                                     <div class="col-sm-6">
                                         <div class="form-group form-float">
                                             <div class="form-line">
                                                 <input type="number" step="0.1" id="application_fee" name="application_fee"
-                                                    class="form-control" step=".01" min="0" value="0.00"
-                                                    <?php echo $readonly; ?>>
+                                                    class="form-control" step=".01" min="0" value="<?= $data['application_fee'] ?? '0.00' ?>"
+                                                    <?php echo $readonly; ?> <?php echo $readonly_edit; ?>>
                                                 <label class="form-label">Application Fee</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <?php } ?>
                                     <div class="col-sm-6">
                                         <div class="form-group form-float">
                                             <div class="form-line focused">
@@ -265,18 +263,16 @@ if($edit == true){
                                         </div>
                                     </div>
                                     <div style="clear:both"></div>
-                                    <?php if ($edit != true) { ?>
                                     <div class="col-sm-12" align="center">
                                         <div class="form-group">
                                             <h4 style="margin-bottom:5px; margin-top:5px; color:#FFFFFF; background:#d4aa00;">Total
                                                 Amount</h4>
                                             <input type="number" step="0.1" id="total_amount" name="total_amount"
-                                                class="form-control" step=".01" min="0" value="<?= $data['payment'] ?>"
+                                                class="form-control" step=".01" min="0" value="<?= $data['total_amount'] ?? $data['payment'] ?>"
                                                 style="margin:0 auto 20px;font-weight:bold;font-size: 36px;text-align: center;max-width:300px;"
                                                 readonly>
                                         </div>
                                     </div>
-                                    <?php } ?>
                                     <?php if ($view != true) { ?>
                                         <div class="col-sm-12" align="center">
                                             <!-- <input  type="checkbox" checked="checked" id="print" name="print" value="Print">
