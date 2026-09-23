@@ -144,20 +144,20 @@ class Member extends BaseController
 					send_mail_with_content($to_mail, $message, $subject, $temple_title);
 				}
 				$this->session->setFlashdata('succ', 'Member Added Successfully');
-				header("Location: " . base_url() . "/member");
+				return redirect()->to(base_url() . "/member");
 			} else {
 				$this->session->setFlashdata('fail', 'Please Try Again');
-				header("Location: " . base_url() . "/member");
+				return redirect()->to(base_url() . "/member");
 			}
 		} else {
 			$data['modified'] = date('Y-m-d H:i:s');
 			$res = $this->db->table('member')->where('id', $id)->update($data);
 			if ($res) {
 				$this->session->setFlashdata('succ', 'Member Updated Successfully');
-				header("Location: " . base_url() . "/member");
+				return redirect()->to(base_url() . "/member");
 			} else {
 				$this->session->setFlashdata('fail', 'Please Try Again');
-				header("Location: " . base_url() . "/member");
+				return redirect()->to(base_url() . "/member");
 			}
 		}
 	}
@@ -199,10 +199,10 @@ class Member extends BaseController
 					send_mail_with_content($to_mail, $message, $subject, $temple_title);
 				}
 				$this->session->setFlashdata('succ', 'Member Renewal Successfully completed');
-				header("Location: " . base_url() . "/member");
+				return redirect()->to(base_url() . "/member");
 			} else {
 				$this->session->setFlashdata('fail', 'Please Try Again');
-				header("Location: " . base_url() . "/member");
+				return redirect()->to(base_url() . "/member");
 			}
 		}
 	}
