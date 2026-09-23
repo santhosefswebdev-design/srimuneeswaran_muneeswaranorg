@@ -1680,6 +1680,7 @@ $summary_total['offering'] = array();
 									?>
 									<?php
 									$member_total = 0;
+									$member_amount_fee_groups = array();
 									$sale_summary['member'] = array();
 									$sale_summary['member']['total_amount'] = 0;
 									$sale_summary['member']['paid_amount'] = 0;
@@ -1737,6 +1738,19 @@ $summary_total['offering'] = array();
 														if (empty($summary_total['sales'][$member_detail['paymentmode']]))
 															$summary_total['sales'][$member_detail['paymentmode']] = 0;
 														$summary_total['sales'][$member_detail['paymentmode']] += $member_collected;
+
+														$group_fee = floatval($member_detail['application_fee'] ?? 0);
+														$group_key = number_format($member_detail['payment'], 2) . '|' . number_format($group_fee, 2);
+														if (!isset($member_amount_fee_groups[$group_key])) {
+															$member_amount_fee_groups[$group_key] = [
+																'amount' => floatval($member_detail['payment']),
+																'application_fee' => $group_fee,
+																'qty' => 0,
+																'total' => 0
+															];
+														}
+														$member_amount_fee_groups[$group_key]['qty'] += 1;
+														$member_amount_fee_groups[$group_key]['total'] += $member_collected;
 														?>
 														<tr>
 															<td style="padding: 5px 10px!important;"><?php echo $m_i; ?></td>
@@ -1768,6 +1782,48 @@ $summary_total['offering'] = array();
 														<td colspan="7">&nbsp;</td>
 														<td
 															style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
+															<?php echo number_format($member_total, 2); ?>
+														</td>
+													</tr>
+												</tfoot>
+											</table>
+										</div>
+										<div class="col-md-12">
+											<h4 style="text-align: center">Member Payment Summary (Grouped by Amount & Application Fee)</h4>
+										</div>
+										<div class="table-responsive col-md-12 det"
+											style="background:#FFF; float:none;margin-bottom:0px;">
+											<table class="table table-bordered table-striped table-hover">
+												<thead style="background: #3F51B5;color: #fff;">
+													<tr>
+														<th style="padding: 5px 10px!important;text-align:right;">Amount (S$)</th>
+														<th style="padding: 5px 10px!important;text-align:right;">Application Fee (S$)</th>
+														<th style="padding: 5px 10px!important;text-align:right;">Qty</th>
+														<th style="padding: 5px 10px!important;text-align:right;">Total Amount (S$)</th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php foreach ($member_amount_fee_groups as $group) { ?>
+														<tr>
+															<td style="padding: 5px 10px!important;text-align:right;">
+																<?php echo number_format($group['amount'], 2); ?>
+															</td>
+															<td style="padding: 5px 10px!important;text-align:right;">
+																<?php echo number_format($group['application_fee'], 2); ?>
+															</td>
+															<td style="padding: 5px 10px!important;text-align:right;">
+																<?php echo $group['qty']; ?>
+															</td>
+															<td style="padding: 5px 10px!important;text-align:right;">
+																<?php echo number_format($group['total'], 2); ?>
+															</td>
+														</tr>
+													<?php } ?>
+												</tbody>
+												<tfoot>
+													<tr>
+														<td colspan="3" style="padding: 5px 10px!important;text-align:right;font-weight:bold;">Grand Total</td>
+														<td style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
 															<?php echo number_format($member_total, 2); ?>
 														</td>
 													</tr>
