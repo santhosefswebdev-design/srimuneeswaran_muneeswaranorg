@@ -259,7 +259,7 @@
                                   class="form-control" step=".01" min="0" required>
                               </div>
                               <div class="form-group"><label class="form-label">Application Fee</label>
-                                <input type="number" step="0.1" id="application_fee" name="application_fee"
+                                <input type="number" step="0.1" readonly id="application_fee" name="application_fee"
                                   class="form-control" step=".01" min="0">
                               </div>
                               <div class="form-group">
