@@ -69,8 +69,8 @@ class Member_type extends BaseController
 		$id = $_POST['id'];
         $data['name']		    =	trim($_POST['name']);
 		$data['description']    =	trim($_POST['description']);
-		$data['amount']    		=	trim($_POST['amount']);
-		$data['application_fee']	=	trim($_POST['application_fee']);
+		$data['amount']    		=	max(0, trim($_POST['amount']));
+		$data['application_fee']	=	max(0, trim($_POST['application_fee']));
 		$data['payment_terms']  =	trim($_POST['payment_terms']);
 
 		if(empty($id)){

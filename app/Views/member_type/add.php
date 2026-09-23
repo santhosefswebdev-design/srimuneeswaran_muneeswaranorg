@@ -8,6 +8,14 @@ if($view == true){
 <?php if($view == true) { ?>
 label.form-label span { display:none !important; color:transporant; }
 <?php } ?>
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
 </style>
 <section class="content">
         <div class="container-fluid">
@@ -46,7 +54,7 @@ label.form-label span { display:none !important; color:transporant; }
                                 <div class="col-sm-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="number" step="0.1" name="amount" class="form-control" step=".01"  value="<?= $data['amount'] ?>" <?php echo $readonly; ?> required>
+                                            <input type="number" step="0.1" name="amount" class="form-control" step=".01" min="0" value="<?= $data['amount'] ?>" <?php echo $readonly; ?> required>
                                             <label class="form-label">Amount <span style="color: red;">*</span></label>
                                         </div>
                                     </div>
@@ -54,7 +62,7 @@ label.form-label span { display:none !important; color:transporant; }
                                 <div class="col-sm-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="number" step="0.1" name="application_fee" class="form-control" step=".01"  value="<?= $data['application_fee'] ?? '' ?>" <?php echo $readonly; ?> required>
+                                            <input type="number" step="0.1" name="application_fee" class="form-control" step=".01" min="0" value="<?= $data['application_fee'] ?? '' ?>" <?php echo $readonly; ?> required>
                                             <label class="form-label">Application Fee <span style="color: red;">*</span></label>
                                         </div>
                                     </div>
