@@ -1606,10 +1606,13 @@ $summary_total['offering'] = array();
 															$member_collected = $member_detail['total_amount'] ?? $member_detail['payment'];
 															$member_total += floatval($member_collected);
 
+															// Group by (Amount, Application Fee) instead of Member Type
 															$memberTypeName = $member_detail['member_type_name'];
+															$group_fee = floatval($member_detail['application_fee'] ?? 0);
+															$group_key = number_format($member_detail['payment'], 2) . '|' . number_format($group_fee, 2);
 
-															if (!isset($sale_summary['member'][$memberTypeName])) {
-																$sale_summary['member'][$memberTypeName] = [
+															if (!isset($sale_summary['member'][$group_key])) {
+																$sale_summary['member'][$group_key] = [
 																	'name_eng' => $memberTypeName,
 																	'ledger_code' => 0,
 																	'qty' => 0,
@@ -1617,8 +1620,8 @@ $summary_total['offering'] = array();
 																];
 															}
 
-															$sale_summary['member'][$memberTypeName]['qty'] += 1;
-															$sale_summary['member'][$memberTypeName]['total'] += floatval($member_collected);
+															$sale_summary['member'][$group_key]['qty'] += 1;
+															$sale_summary['member'][$group_key]['total'] += floatval($member_collected);
 															$sale_summary['member']['total_amount'] += floatval($member_collected);
 															$sale_summary['member']['paid_amount'] += floatval($member_collected);
 
