@@ -1,0 +1,1 @@
+var user_type=1;var disable_ad=0;

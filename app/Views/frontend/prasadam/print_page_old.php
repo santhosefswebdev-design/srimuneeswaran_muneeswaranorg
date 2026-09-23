@@ -1,0 +1,162 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Barlow', sans-serif;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  table td {
+    padding: 5px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px dashed #000;
+    color: #fff;
+    background-color: #fff;
+    height: 1px;
+  }
+
+  p {
+    font-size: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-family: monospace;
+    margin: 0px
+  }
+</style>
+
+<p style="border-bottom: 3px dotted #9E9E9E;max-width: 80mm;"></p>
+<h3
+  style="text-align: center;text-transform: uppercase;max-width: 80mm;margin: 5px 0;font-size: 13px;font-family: monospace;">
+  Office Copy</h3>
+<p style="border-bottom: 3px dotted #9E9E9E;max-width: 80mm;"></p>
+<p style="max-width: 80mm;font-size: 11px;">ஓம் சக்தி</p>
+<div style="max-width: 80mm;max-height:auto;font-weight: 600;font-family: monospace;">
+  <p><img src="<?php echo base_url(); ?>/uploads/main/<?php echo $temp_details['image']; ?>" style="width:70px;"
+      align="center"></p>
+  <p style="font-size:13px;font-weight:bold;">
+    <?php echo $temp_details['name']; ?>
+  </p>
+  <p>
+    <?php echo $temp_details['address1']; ?>
+    <?php if (!empty($temp_details['address2'])) {
+      echo "</br>";
+      echo $temp_details['address2'];
+    } ?></br>
+    <?php echo $temp_details['city'] . '-' . $temp_details['postcode']; ?>, Tel:
+    <?= $temp_details['telephone']; ?>
+  </p>
+  <hr>
+  <p style="text-align: center;">Date:
+    <?php echo date('d-m-Y', strtotime($qry1['date'])); ?>
+  </p>
+  <p style="text-align: center;">Collection Date:
+    <?php echo date('d-m-Y h:i A', strtotime($qry1['collection_date'] . ' ' . $qry1['start_time'])); ?>
+  </p>
+  <p style="text-align: center;">Customer Name:
+    <?php echo $qry1['customer_name']; ?>
+  </p>
+  <p style="text-align: center;">Mobile No:
+    <?php echo $qry1['mobile_no']; ?>
+  </p>
+  <hr>
+  <p style="text-align: left;">SNO&nbsp;&nbsp;PARTICULARS</p>
+  <hr>
+  <?php $total = 0;
+  $i = 1;
+  foreach ($qry1_payfor as $row) { ?>
+    <p style="text-align: left;font-size: 10px;">
+      <?= $i++; ?>&nbsp;&nbsp;
+      <?= $row['name_eng']; ?><br>&nbsp;&nbsp;
+      <?= $row['name_tamil']; ?><br>&nbsp;&nbsp;
+      <span style="font-size: 10px;">[SGD
+        <?= $row['amount']; ?> x
+        <?= $row['quantity']; ?> = SGD
+        <?= number_format($row['quantity'] * $row['amount'], 2); ?>]
+      </span>
+    </p>
+    <?php $total += $row['quantity'] * $row['amount'];
+  } ?>
+  <hr>
+  <p style="text-align: center; font-size: 13px;">Total: SGD
+    <?= number_format($total, 2); ?>
+  </p>
+  <hr>
+  <?php /*<img src="<?php echo $qrcdoee; ?>" style="display:block;margin:0 auto;width:auto;height:auto;">
+<p style="text-align:center;font-size:13px;font-weight:bold;">["PLEASE SCAN HERE"]</p>*/ ?>
+  <br>
+  <!-- <p><span>---</span>GRASP SOFTWARE SOLUTIONS SDN. BHD.<span>---</span></p> -->
+</div>
+<br>
+<p style="border-bottom: 3px dotted #9E9E9E;max-width: 80mm;"></p>
+<h3
+  style="text-align: center;text-transform: uppercase;max-width: 80mm;margin: 5px 0;font-size: 13px;font-family: monospace;">
+  Customer Copy</h3>
+<p style="border-bottom: 3px dotted #9E9E9E;max-width: 80mm;"></p>
+<p style="max-width: 80mm;font-size: 11px;">ஓம் சக்தி</p>
+<div style="max-width: 80mm;max-height:auto;font-weight: 600;font-family: monospace;">
+  <p><img src="<?php echo base_url(); ?>/uploads/main/<?php echo $temp_details['image']; ?>" style="width:70px;"
+      align="center"></p>
+  <p style="font-size:13px;font-weight:bold;">
+    <?php echo $temp_details['name']; ?>
+  </p>
+  <p>
+    <?php echo $temp_details['address1']; ?>
+    <?php if (!empty($temp_details['address2'])) {
+      echo "</br>";
+      echo $temp_details['address2'];
+    } ?></br>
+    <?php echo $temp_details['city'] . '-' . $temp_details['postcode']; ?>, Tel:
+    <?= $temp_details['telephone']; ?>
+  </p>
+  <hr>
+  <p style="text-align: center;">Date:
+    <?php echo date('d-m-Y', strtotime($qry1['date'])); ?>
+  </p>
+  <p style="text-align: center;">Collection Date:
+    <?php echo date('d-m-Y h:i A', strtotime($qry1['collection_date'] . ' ' . $qry1['start_time'])); ?>
+  </p>
+  <p style="text-align: center;">Customer Name:
+    <?php echo $qry1['customer_name']; ?>
+  </p>
+  <p style="text-align: center;">Mobile No:
+    <?php echo $qry1['mobile_no']; ?>
+  </p>
+  <hr>
+  <p style="text-align: left;">SNO&nbsp;&nbsp;PARTICULARS</p>
+  <hr>
+  <?php $total = 0;
+  $i = 1;
+  foreach ($qry1_payfor as $row) { ?>
+    <p style="text-align: left;font-size: 10px;">
+      <?= $i++; ?>&nbsp;&nbsp;
+      <?= $row['name_eng']; ?><br>&nbsp;&nbsp;
+      <?= $row['name_tamil']; ?><br>&nbsp;&nbsp;
+      <span style="font-size: 10px;">[SGD
+        <?= $row['amount']; ?> x
+        <?= $row['quantity']; ?> = SGD
+        <?= number_format($row['quantity'] * $row['amount'], 2); ?>]
+      </span>
+    </p>
+    <?php $total += $row['quantity'] * $row['amount'];
+  } ?>
+  <hr>
+  <p style="text-align: center; font-size: 13px;">Total: SGD
+    <?= number_format($total, 2); ?>
+  </p>
+  <hr>
+  <?php /*<img src="<?php echo $qrcdoee; ?>" style="display:block;margin:0 auto;width:auto;height:auto;">
+<p style="text-align:center;font-size:13px;font-weight:bold;">["PLEASE SCAN HERE"]</p>*/ ?>
+  <br>
+  <!-- <p><span>---</span>GRASP SOFTWARE SOLUTIONS SDN. BHD.<span>---</span></p> -->
+</div>
+<script>
+  window.print();
+  //setTimeout(function(){window.close();},4500);
+</script>
