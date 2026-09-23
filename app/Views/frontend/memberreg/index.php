@@ -254,6 +254,14 @@
                             </div>
 
                             <div class="col-sm-4">
+                              <div class="form-group"><label class="form-label">Payment Amount</label>
+                                <input type="number" step="0.1" readonly id="member_amount" class="form-control"
+                                  step=".01">
+                              </div>
+                              <div class="form-group"><label class="form-label">Application Fee</label>
+                                <input type="number" step="0.1" readonly id="application_fee" name="application_fee"
+                                  class="form-control" step=".01">
+                              </div>
                               <div class="form-group">
                                 <h4 style="margin-bottom:5px; margin-top:5px; color:#FFFFFF; background:#d4aa00;">Total
                                   Amount</h4>
@@ -408,7 +416,11 @@
         data: { id: type },
         success: function (data) {
           obj = jQuery.parseJSON(data);
-          $("#payment").val(obj.amount);
+          var amount = parseFloat(obj.amount) || 0;
+          var fee = parseFloat(obj.application_fee) || 0;
+          $("#member_amount").val(amount.toFixed(2));
+          $("#application_fee").val(fee.toFixed(2));
+          $("#payment").val((amount + fee).toFixed(2));
         }
       });
     });

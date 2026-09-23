@@ -43,6 +43,7 @@
                                             <th>Member Type</th>
                                             <th>Member Description</th>
                                             <th>Amount</th>
+                                            <th>Application Fee</th>
                                             <th>Payment Terms</th>
                                             <?php if($permission['view'] == 1 ||  $permission['edit'] == 1) { ?>
 											<th>Actions</th>
@@ -56,6 +57,7 @@
                                             <td id="pay<?= $row['id']; ?>" data-id="<?= $row['name'];?>"><?php echo $row['name']; ?></td>
                                             <td><?php echo $row['description']; ?></td>
                                             <td><?php echo $row['amount']; ?></td>
+                                            <td><?php echo $row['application_fee']; ?></td>
                                             <td><?php echo $row['payment_terms']; ?></td>
                                             <?php if($permission['view'] == 1 ||  $permission['print'] == 1) { ?>
                                             <td style="width: 16%;">

@@ -54,6 +54,14 @@ label.form-label span { display:none !important; color:transporant; }
                                 <div class="col-sm-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
+                                            <input type="number" step="0.1" name="application_fee" class="form-control" step=".01"  value="<?= $data['application_fee'] ?? '' ?>" <?php echo $readonly; ?> required>
+                                            <label class="form-label">Application Fee <span style="color: red;">*</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
                                             <select class="form-control show-tick" name="payment_terms">
                                             <option value="Once" <?php if($data['payment_terms']=='Once') { echo 'selected'; } ?> >Once</option>
                                             <option value="Annually" <?php if($data['payment_terms']=='Annually') { echo 'selected'; } ?> >Annually</option>

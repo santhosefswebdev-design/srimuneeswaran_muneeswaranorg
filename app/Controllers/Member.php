@@ -123,6 +123,8 @@ class Member extends BaseController
 		$data['payment_status'] = 2;
 
 		if (empty($id)) {
+			// Application fee is a one-time charge at initial registration only (not on renewal/edit).
+			$data['application_fee'] = !empty($_POST['application_fee']) ? trim($_POST['application_fee']) : 0.00;
 			$query = $this->db->query("select max(member_no) as member_no from member")->getRowArray();
 			$data['member_no'] = sprintf("%06d", (((float) substr($query['member_no'], -5)) + 1));
 			$data['created'] = date('Y-m-d H:i:s');
@@ -286,7 +288,7 @@ class Member extends BaseController
 	
 	public function get_member_amount(){
 		$id = $_POST['id'];
-		$data = $this->db->table('member_type')->select('amount')->where('id', $id)->get()->getRowArray();
+		$data = $this->db->table('member_type')->select('amount, application_fee')->where('id', $id)->get()->getRowArray();
 		echo json_encode($data);
 	}
 	public function renewal_report()

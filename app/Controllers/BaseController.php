@@ -28,8 +28,7 @@ class BaseController extends Controller
      */
 	function __construct(){
 		$this->db = \Config\Database::connect();
-		$this->session = \Config\Services::session($config);
-		//$this->session = \Config\Services::session();
+		$this->session = \Config\Services::session();
 		//$this->view = \Config\Services::renderer();
         $this->session->start();
         $this->json_resp = array();

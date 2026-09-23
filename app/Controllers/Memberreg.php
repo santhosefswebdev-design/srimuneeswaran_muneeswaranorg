@@ -102,6 +102,7 @@ class Memberreg extends BaseController
 			$data['end_date'] = $endDate;
 		}
 		$data['payment'] = trim($_POST['payment']);
+		$data['application_fee'] = !empty($_POST['application_fee']) ? trim($_POST['application_fee']) : 0.00;
 		$pay_method = !empty($_POST['pay_method']) ? trim($_POST['pay_method']) : 'cash';
 		$data['added_by'] = $this->session->get('log_id_frend');
 		$data['paid_through'] = "COUNTER";
@@ -252,7 +253,7 @@ class Memberreg extends BaseController
 	public function get_member_amount()
 	{
 		$id = $_POST['id'];
-		$data = $this->db->table('member_type')->select('amount')->where('id', $id)->get()->getRowArray();
+		$data = $this->db->table('member_type')->select('amount, application_fee')->where('id', $id)->get()->getRowArray();
 		echo json_encode($data);
 	}
 

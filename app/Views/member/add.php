@@ -202,6 +202,18 @@ if($edit == true){
                                         </div>
                                     </div>
                                     <div style="clear:both"></div>
+                                    <?php if ($edit != true) { ?>
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="number" step="0.1" id="application_fee" name="application_fee"
+                                                    class="form-control" step=".01" value="0.00"
+                                                    <?php echo $readonly; ?>>
+                                                <label class="form-label">Application Fee</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
                                     <div class="col-sm-6">
                                         <div class="form-group form-float">
                                             <div class="form-line focused">
@@ -338,6 +350,7 @@ $(document).ready(function () {
             success: function (data) {
                 obj = jQuery.parseJSON(data);
                 $("#payment").val(obj.amount);
+                $("#application_fee").val(parseFloat(obj.application_fee || 0).toFixed(2));
             }
         });
     });
