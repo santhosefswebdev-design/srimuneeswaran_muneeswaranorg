@@ -86,8 +86,7 @@ class Login extends BaseController
 				 
 				 $this->session->set($session);
                  $this->session->setFlashdata('succ', 'Login Successfully!...');
-                header('location: '.base_url().'/dashboard');
-                 //return redirect()->to('dashboard');
+                return redirect()->to(base_url().'/dashboard');
             }else{
                 $this->session->setFlashdata('fail', 'Wrong Username And Password');
                 echo view('/login');
@@ -139,8 +138,7 @@ class Login extends BaseController
 				 
 				 $this->session->set($session);
                  $this->session->setFlashdata('succ', 'Login Successfully!...');
-                header('location: '.base_url().'/dashboard');
-				exit;
+                return redirect()->to(base_url().'/dashboard');
             }else{
                 $this->session->setFlashdata('fail', 'Wrong Username And Password');
                 echo view('/login');
@@ -152,6 +150,6 @@ class Login extends BaseController
 	}
     public function logout(){
         $this->session->destroy();
-        header('Location: '.base_url().'/login');
+        return redirect()->to(base_url().'/login');
     }
 }
