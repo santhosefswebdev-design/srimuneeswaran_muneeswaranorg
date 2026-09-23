@@ -1722,11 +1722,13 @@ $summary_total['offering'] = array();
 																'ledger_code' => '',
 																'qty' => 0,
 																'amount' => $member_collected,
+																'application_fee' => 0,
 																'total' => 0
 															];
 														}
 
 														$sale_summary['member'][$memberTypeName]['qty'] += 1;
+														$sale_summary['member'][$memberTypeName]['application_fee'] += floatval($member_detail['application_fee'] ?? 0);
 														$sale_summary['member'][$memberTypeName]['total'] += $member_collected;
 
 														$sale_summary['member']['total_amount'] += $member_collected;
@@ -1965,7 +1967,7 @@ $summary_total['offering'] = array();
 											if (count($sale_summary)) {
 												$sale_summary_qty = 0;
 												$sale_summary_amount = 0;
-												echo '<table class="table"><thead><tr><th width="5%">S.No</th><th width="45%">Item</th><th width="15%">Code</th><th width="10%">Qty</th><th width="12%">Unit Price (S$)</th width="13%"><th>Total Amount (S$)</th></tr></thead><tbody>';
+												echo '<table class="table"><thead><tr><th width="5%">S.No</th><th width="35%">Item</th><th width="15%">Code</th><th width="10%">Qty</th><th width="12%">Unit Price (S$)</th width="13%"><th width="12%">Application Fee (S$)</th><th>Total Amount (S$)</th></tr></thead><tbody>';
 
 												foreach ($sale_summary as $key => $values) {
 													// Skip Product Offering section entirely
@@ -1975,7 +1977,7 @@ $summary_total['offering'] = array();
 
 													// Only show section if there's actual paid amount
 													if (($values['total_amount'] != 0) || ($values['paid_amount'] != 0)) {
-														echo '<tr><td colspan="6" class="centered"><h4 class="capitalize">' . $key . '</h4></td></tr>';
+														echo '<tr><td colspan="7" class="centered"><h4 class="capitalize">' . $key . '</h4></td></tr>';
 													}
 
 													foreach ($values as $item) {
@@ -1995,6 +1997,7 @@ $summary_total['offering'] = array();
 																echo '<td class="centered"><p style="text-align:right;">' . (isset($item['amount']) && $item['amount'] > 0 ? number_format($item['amount'], 2) : '-') . '</p></td>';
 															}
 
+															echo '<td class="centered"><p style="text-align:right;">' . (!empty($item['application_fee']) ? number_format($item['application_fee'], 2) : '-') . '</p></td>';
 															echo '<td class="centered" style="text-align:right;"><p>$ ' . number_format($item['total'], 2) . '</p></td>';
 															echo '</tr>';
 														}
@@ -2002,18 +2005,18 @@ $summary_total['offering'] = array();
 
 													// Show subtotal using paid_amount
 													if ($values['paid_amount'] != 0.00) {
-														echo '<tr><th colspan="5" style="text-align:right;" class="capitalize"> Sub Total Amount</th>';
+														echo '<tr><th colspan="6" style="text-align:right;" class="capitalize"> Sub Total Amount</th>';
 														echo '<th><p style="text-align:right;">$' . number_format($values['paid_amount'], 2) . '</p></th></tr>';
 														$sale_summary_amount += $values['paid_amount'];
 													} elseif ($values['total_amount'] != 0.00) {
-														echo '<tr><th colspan="5" style="text-align:right;" class="capitalize"> Sub Total Amount</th>';
+														echo '<tr><th colspan="6" style="text-align:right;" class="capitalize"> Sub Total Amount</th>';
 														echo '<th><p style="text-align:right;">$' . number_format($values['total_amount'], 2) . '</p></th></tr>';
 														$sale_summary_amount += $values['total_amount'];
 													}
 												}
 
 												echo '</tbody><tfoot><tr>';
-												echo '<td colspan="5" style="background: #f7ebbb"><h4 class="capitalize" style="text-align:-webkit-right;">Grand Total</h4></td>';
+												echo '<td colspan="6" style="background: #f7ebbb"><h4 class="capitalize" style="text-align:-webkit-right;">Grand Total</h4></td>';
 												echo '<th style="text-align:right;">$ ' . number_format($sale_summary_amount, 2) . '</th>';
 												echo '</tr></tfoot></table>';
 											}
