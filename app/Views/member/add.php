@@ -16,6 +16,14 @@ if($edit == true){
         }
 
     <?php } ?>
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
 </style>
 <section class="content">
     <div class="container-fluid">
@@ -207,7 +215,7 @@ if($edit == true){
                                         <div class="form-group form-float">
                                             <div class="form-line">
                                                 <input type="number" step="0.1" id="application_fee" name="application_fee"
-                                                    class="form-control" step=".01" value="0.00"
+                                                    class="form-control" step=".01" min="0" value="0.00"
                                                     <?php echo $readonly; ?>>
                                                 <label class="form-label">Application Fee</label>
                                             </div>
@@ -218,7 +226,7 @@ if($edit == true){
                                         <div class="form-group form-float">
                                             <div class="form-line focused">
                                                 <input type="number" step="0.1" id="payment" name="payment"
-                                                    class="form-control" step=".01" value="<?= $data['payment'] ?>"
+                                                    class="form-control" step=".01" min="0" value="<?= $data['payment'] ?>"
                                                     <?php echo $readonly; ?> <?php echo $readonly_edit; ?>>
                                                 <label class="form-label">Payment <span
                                                         style="color: red;">*</span></label>

@@ -101,8 +101,8 @@ class Memberreg extends BaseController
 			$endDate = date("Y-m-d", strtotime("+1 year -1 day", strtotime($_POST['start_date'])));
 			$data['end_date'] = $endDate;
 		}
-		$data['payment'] = trim($_POST['payment']);
-		$data['application_fee'] = !empty($_POST['application_fee']) ? trim($_POST['application_fee']) : 0.00;
+		$data['payment'] = max(0, trim($_POST['payment']));
+		$data['application_fee'] = !empty($_POST['application_fee']) ? max(0, trim($_POST['application_fee'])) : 0.00;
 		$data['total_amount'] = (float) $data['payment'] + (float) $data['application_fee'];
 		$pay_method = !empty($_POST['pay_method']) ? trim($_POST['pay_method']) : 'cash';
 		$data['added_by'] = $this->session->get('log_id_frend');
