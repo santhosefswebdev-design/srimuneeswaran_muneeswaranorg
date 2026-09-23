@@ -1,4 +1,5 @@
 .env
+/app/Config/
 /node_modules/
 /writable/cache/*
 /writable/logs/*
