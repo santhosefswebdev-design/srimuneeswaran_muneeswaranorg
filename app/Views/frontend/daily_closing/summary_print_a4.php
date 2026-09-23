@@ -1698,9 +1698,11 @@ $summary_total['offering'] = array();
 														<th style="padding: 5px 10px!important;">Name</th>
 														<th style="padding: 5px 10px!important;">Member Type</th>
 														<th style="padding: 5px 10px!important;">Payment Mode</th>
+														<th style="padding: 5px 10px!important;text-align:right;">Amount
+															(S$)</th>
 														<th style="padding: 5px 10px!important;text-align:right;">Application Fee
 															(S$)</th>
-														<th style="padding: 5px 10px!important;text-align:right;">Amount
+														<th style="padding: 5px 10px!important;text-align:right;">Total Amount
 															(S$)</th>
 													</tr>
 												</thead>
@@ -1708,9 +1710,8 @@ $summary_total['offering'] = array();
 													<?php
 													$m_i = 1;
 													foreach ($member_details as $member_detail) {
-														// payment = base membership fee only; use total_amount (fee included) for actual cash collected.
-														$member_detail['payment'] = $member_detail['total_amount'] ?? $member_detail['payment'];
-														$member_total += $member_detail['payment'];
+														$member_collected = $member_detail['total_amount'] ?? $member_detail['payment'];
+														$member_total += $member_collected;
 
 														// Add to sale summary
 														$memberTypeName = $member_detail['member_type_name'];
@@ -1720,20 +1721,20 @@ $summary_total['offering'] = array();
 																'name_eng' => $memberTypeName,
 																'ledger_code' => '',
 																'qty' => 0,
-																'amount' => $member_detail['payment'],
+																'amount' => $member_collected,
 																'total' => 0
 															];
 														}
 
 														$sale_summary['member'][$memberTypeName]['qty'] += 1;
-														$sale_summary['member'][$memberTypeName]['total'] += $member_detail['payment'];
+														$sale_summary['member'][$memberTypeName]['total'] += $member_collected;
 
-														$sale_summary['member']['total_amount'] += $member_detail['payment'];
-														$sale_summary['member']['paid_amount'] += $member_detail['payment'];
+														$sale_summary['member']['total_amount'] += $member_collected;
+														$sale_summary['member']['paid_amount'] += $member_collected;
 
 														if (empty($summary_total['sales'][$member_detail['paymentmode']]))
 															$summary_total['sales'][$member_detail['paymentmode']] = 0;
-														$summary_total['sales'][$member_detail['paymentmode']] += $member_detail['payment'];
+														$summary_total['sales'][$member_detail['paymentmode']] += $member_collected;
 														?>
 														<tr>
 															<td style="padding: 5px 10px!important;"><?php echo $m_i; ?></td>
@@ -1746,10 +1747,13 @@ $summary_total['offering'] = array();
 															<td style="padding: 5px 10px!important;">
 																<?php echo strtoupper($member_detail['paymentmode']); ?></td>
 															<td style="padding: 5px 10px!important;text-align:right;">
+																<?php echo number_format($member_detail['payment'], 2); ?>
+															</td>
+															<td style="padding: 5px 10px!important;text-align:right;">
 																<?php echo number_format($member_detail['application_fee'] ?? 0, 2); ?>
 															</td>
 															<td style="padding: 5px 10px!important;text-align:right;">
-																<?php echo number_format($member_detail['payment'], 2); ?>
+																<?php echo number_format($member_collected, 2); ?>
 															</td>
 														</tr>
 														<?php
@@ -1759,7 +1763,7 @@ $summary_total['offering'] = array();
 												</tbody>
 												<tfoot>
 													<tr>
-														<td colspan="6">&nbsp;</td>
+														<td colspan="7">&nbsp;</td>
 														<td
 															style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
 															<?php echo number_format($member_total, 2); ?>

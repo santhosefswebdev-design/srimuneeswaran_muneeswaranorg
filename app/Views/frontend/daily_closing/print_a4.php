@@ -1174,17 +1174,17 @@ select.input { color:#000; }
 														<!-- <th style="padding: 5px 10px!important;">IC No</th> -->
 														<th style="padding: 5px 10px!important;">Mobile</th>
 														<th colspan="4" style="padding: 5px 10px!important;">Payment Mode</th>
-														<th style="padding: 5px 10px!important;text-align:right;">Application Fee (S$)</th>
 														<th style="padding: 5px 10px!important;text-align:right;">Amount (S$)</th>
+														<th style="padding: 5px 10px!important;text-align:right;">Application Fee (S$)</th>
+														<th style="padding: 5px 10px!important;text-align:right;">Total Amount (S$)</th>
 													</tr>
 												</thead>
 												<tbody>
 													<?php
 													$mem_i = 1;
 													foreach ($member_details as $member_detail) {
-														// payment = base membership fee only; use total_amount (fee included) for actual cash collected.
-														$member_detail['payment'] = $member_detail['total_amount'] ?? $member_detail['payment'];
-														$member_total += floatval($member_detail['payment']);
+														$member_collected = $member_detail['total_amount'] ?? $member_detail['payment'];
+														$member_total += floatval($member_collected);
 														$memberTypeName = $member_detail['member_type_name'];
 
 														if (!isset($sale_summary['Member'][$memberTypeName])) {
@@ -1197,13 +1197,13 @@ select.input { color:#000; }
 														}
 
 														$sale_summary['Member'][$memberTypeName]['qty'] += 1;
-														$sale_summary['Member'][$memberTypeName]['total'] += floatval($member_detail['payment']);
-														$sale_summary['Member']['total_amount'] += floatval($member_detail['payment']);
-														$sale_summary['Member']['paid_amount'] += floatval($member_detail['payment']);
+														$sale_summary['Member'][$memberTypeName]['total'] += floatval($member_collected);
+														$sale_summary['Member']['total_amount'] += floatval($member_collected);
+														$sale_summary['Member']['paid_amount'] += floatval($member_collected);
 
 														if (empty($summary_total['sales'][$member_detail['paymentmode']]))
 															$summary_total['sales'][$member_detail['paymentmode']] = 0;
-														$summary_total['sales'][$member_detail['paymentmode']] += floatval($member_detail['payment']);
+														$summary_total['sales'][$member_detail['paymentmode']] += floatval($member_collected);
 														?>
 														<tr>
 															<td style="padding: 5px 10px!important;"><?php echo $mem_i; ?></td>
@@ -1214,10 +1214,13 @@ select.input { color:#000; }
 															<td style="padding: 5px 10px!important;"><?php echo $member_detail['mobile']; ?></td>
 															<td colspan="4" style="padding: 5px 10px!important;"><?php echo $member_detail['paymentmode']; ?></td>
 															<td style="padding: 5px 10px!important;text-align:right;">
+																<?php echo number_format($member_detail['payment'], 2); ?>
+															</td>
+															<td style="padding: 5px 10px!important;text-align:right;">
 																<?php echo number_format($member_detail['application_fee'] ?? 0, 2); ?>
 															</td>
 															<td style="padding: 5px 10px!important;text-align:right;">
-																<?php echo number_format($member_detail['payment'], 2); ?>
+																<?php echo number_format($member_collected, 2); ?>
 															</td>
 														</tr>
 														<?php
@@ -1227,7 +1230,7 @@ select.input { color:#000; }
 												</tbody>
 												<tfoot>
 													<tr>
-														<td colspan="8">&nbsp;</td>
+														<td colspan="9">&nbsp;</td>
 														<td colspan="4" style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
 															<?php echo number_format($member_total, 2); ?>
 														</td>
