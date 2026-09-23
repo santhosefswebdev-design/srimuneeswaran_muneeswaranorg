@@ -254,7 +254,7 @@
                             </div>
 
                             <div class="col-sm-4">
-                              <div class="form-group"><label class="form-label">Payment Amount</label>
+                              <div class="form-group"><label class="form-label">Amount</label>
                                 <input type="number" step="0.1" readonly id="member_amount" class="form-control"
                                   step=".01">
                               </div>

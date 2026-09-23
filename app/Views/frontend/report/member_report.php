@@ -211,6 +211,7 @@
 													<th style="width:12%;">Mobile Number</th>
 													<th style="width:12%;">Member Number</th>
 													<th style="width:20%;">Address</th>
+													<th style="width:15%;">Payment Details</th>
 													<th style="width:10%;">Status</th>
 													<th style="width:11%;">Action</th>
 												</tr>
@@ -303,6 +304,15 @@
 				{ "data": "mobile" },
 				{ "data": "member_no" },
 				{ "data": "address", "defaultContent": "-" },
+				{ "data": null, "render": function(data, type, row) {
+					var fee = parseFloat(row.application_fee) || 0;
+					var html = 'Membership: ' + parseFloat(row.payment - fee).toFixed(2);
+					if (fee > 0) {
+						html += '<br>Application Fee: ' + fee.toFixed(2);
+					}
+					html += '<br><strong>Total: ' + parseFloat(row.payment || 0).toFixed(2) + '</strong>';
+					return html;
+				}},
 				{ "data": "status", "render": function(data, type, row) {
 					return data == 1 ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
 				}},
