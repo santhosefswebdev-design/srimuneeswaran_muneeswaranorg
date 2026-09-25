@@ -163,11 +163,26 @@ $i=1; foreach($booking as $row)
 						</tr>
 					<?php } ?>
 				</table>
-				<?php 
+				<?php
 				}
 			}
 			 ?>
-			 
+
+			 <?php if($row['archanai_category'] == 4 && !empty($products)) { ?>
+				<hr>
+				<br>
+				<table style="width:100%;" class="vechi" border="1">
+					<tr>
+						<th align="left">Application Name</th>
+					</tr>
+					<?php foreach($products as $product) { ?>
+						<tr>
+							<td><?= htmlspecialchars($product['name']); ?></td>
+						</tr>
+					<?php } ?>
+				</table>
+			 <?php } ?>
+
 			 <?php if(!empty($rasi) && $row['archanai_category'] == 1){ ?>
 				<hr><br>
 				<table style="width:100%;" border="1">

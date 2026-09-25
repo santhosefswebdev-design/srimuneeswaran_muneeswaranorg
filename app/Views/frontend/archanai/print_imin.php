@@ -210,6 +210,19 @@
 				<?php } ?>
 			</table>
 		<?php } ?>
+		<?php if (!empty($products)) { ?>
+			<hr>
+			<table style="width:100%;" class="vechi" border="1">
+				<tr>
+					<th align="center">Application Name</th>
+				</tr>
+				<?php foreach ($products as $product) { ?>
+					<tr>
+						<td align="center"><?= htmlspecialchars($product['name']); ?></td>
+					</tr>
+				<?php } ?>
+			</table>
+		<?php } ?>
 		<p class="last_line">அர்ச்சனை முடிவுற்றதும்</p>
 
 		<p class="last_line"> அர்ச்சனைப் பொருளைப் பெற்றுக் கொள்ளலாம்</p>

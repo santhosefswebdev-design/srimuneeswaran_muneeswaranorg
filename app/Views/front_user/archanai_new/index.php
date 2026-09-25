@@ -207,7 +207,7 @@ span.archa_name {
                   <?php foreach($value as $row) { ?>
                 <div class="col-xl-3 col-sm-6 col-lg-3 col-md-4 grid-margin stretch-card portfolio <?php if(!empty($key)) { echo str_replace(' ', '_', strtolower($key)); } ?>" data-cat="<?php if(!empty($key)) { echo str_replace(' ', '_', strtolower($key)); } ?>" >
                   <div class="card">
-                     <a href="#" data-product_id="<?php echo $row['id']; ?>" data-name="<?php echo str_replace(' ', '_', strtolower($row['name_eng'])); ?>" data-price="<?php echo number_format((float)($row['amount']), 2);?>" class="add-to-cart" data-src="<?php echo base_url(); ?>/uploads/archanai/<?php echo $row['image']; ?>" data-category="<?php echo $row['archanai_category']; ?>">
+                     <a href="#" data-product_id="<?php echo $row['id']; ?>" data-name="<?php echo str_replace(' ', '_', strtolower($row['name_eng'])); ?>" data-price="<?php echo number_format((float)($row['amount']), 2, '.', '');?>" class="add-to-cart" data-src="<?php echo base_url(); ?>/uploads/archanai/<?php echo $row['image']; ?>" data-category="<?php echo $row['archanai_category']; ?>">
                      <div class="card-body d-flex flex-column justify-content-between">
                       <img class="img-fluid prod_img" src="<?php echo base_url(); ?>/uploads/archanai/<?php echo $row['image']; ?>">
                       <div class="d-flex justify-content-between align-items-center mb-2 mt-2" style="flex-direction: column;">

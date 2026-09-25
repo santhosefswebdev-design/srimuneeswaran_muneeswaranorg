@@ -132,6 +132,21 @@
 			<?php } ?>
 		</table>
 	<?php } ?>
+	<?php if (!empty($products)) { ?>
+		<hr>
+		<table style="width:100%;">
+			<tr>
+				<th align="left">Application Name</th>
+			</tr>
+			<?php foreach ($products as $product) { ?>
+				<tr>
+					<td>
+						<?= htmlspecialchars($product['name']); ?>
+					</td>
+				</tr>
+			<?php } ?>
+		</table>
+	<?php } ?>
 	<p style="text-align: center; font-size: 24px;">Total: RM
 		<?= number_format($total, 2); ?>
 	</p>

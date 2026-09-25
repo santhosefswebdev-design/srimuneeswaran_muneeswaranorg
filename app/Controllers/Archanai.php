@@ -91,7 +91,7 @@ class Archanai extends BaseController
 		$data['modified'] = date('Y-m-d H:i:s');
 		$builder = $this->db->table('archanai_group')->insert($data);
 		if($builder){
-    	    header("Location: ".base_url()."/archanai/add");
+    	    return redirect()->to(base_url()."/archanai/add");
     	}
 	}
 	
@@ -118,7 +118,6 @@ class Archanai extends BaseController
 		if(!empty($_POST['ledger_id'])) $data['ledger_id'] = $_POST['ledger_id'];
 		$data['added_by']	 =	$this->session->get('log_id');
 		if(!empty($_FILES['archanai_image']['name']) > 0){
-			echo $_FILES['archanai_image']['name'];
 			$name = time() . '_' .$_FILES['archanai_image']['name'];
 			$target_dir = "uploads/archanai/";
 			move_uploaded_file($_FILES['archanai_image']['tmp_name'],$target_dir.$name);
@@ -136,20 +135,20 @@ class Archanai extends BaseController
 		    $builder = $this->db->table('archanai')->insert($data);
 		    if($builder){
     		    $this->session->setFlashdata('succ', 'Archanai Added Successfully');
-    		    header("Location: ".base_url()."/archanai");
+    		    return redirect()->to(base_url()."/archanai");
     		}else{
     		    $this->session->setFlashdata('fail', 'Please Try Again');
-    		    header("Location: ".base_url()."/archanai");
+    		    return redirect()->to(base_url()."/archanai");
     		}
 		}else{
             $data['modified' ] = date('Y-m-d H:i:s');
             $builder = $this->db->table('archanai')->where('id', $id)->update($data);
 		    if($builder){
     		    $this->session->setFlashdata('succ', 'Archanai Update Successfully');
-    		    header("Location: ".base_url()."/archanai");
+    		    return redirect()->to(base_url()."/archanai");
     		}else{
     		    $this->session->setFlashdata('fail', 'Please Try Again');
-    		    header("Location: ".base_url()."/archanai");
+    		    return redirect()->to(base_url()."/archanai");
     		}
 		}
 	}
@@ -162,10 +161,10 @@ class Archanai extends BaseController
 		$res = $this->db->table('archanai')->delete(['id' => $id]);
 		if($res){
 		    $this->session->setFlashdata('succ', 'Archanai Delete Successfully');
-		    header("Location: ".base_url()."/archanai");
+		    return redirect()->to(base_url()."/archanai");
 		}else{
 		    $this->session->setFlashdata('fail', 'Please Try Again');
-		    header("Location: ".base_url()."/archanai");
+		    return redirect()->to(base_url()."/archanai");
 		}
 	}
 	public function del_check(){
@@ -243,20 +242,20 @@ class Archanai extends BaseController
 		    $builder = $this->db->table('rasi')->insert($data);
 		    if($builder){
     		    $this->session->setFlashdata('succ', 'Rasi Added Successfully');
-    		    header("Location: ".base_url()."/archanai/rasi");
+    		    return redirect()->to(base_url()."/archanai/rasi");
     		}else{
     		    $this->session->setFlashdata('fail', 'Please Try Again');
-    		    header("Location: ".base_url()."/archanai/rasi");
+    		    return redirect()->to(base_url()."/archanai/rasi");
     		}
 		}else{
             $data['modified' ] = date('Y-m-d H:i:s');
             $builder = $this->db->table('rasi')->where('id', $id)->update($data);
 		    if($builder){
     		    $this->session->setFlashdata('succ', 'Rasi Update Successfully');
-    		    header("Location: ".base_url()."/archanai/rasi");
+    		    return redirect()->to(base_url()."/archanai/rasi");
     		}else{
     		    $this->session->setFlashdata('fail', 'Please Try Again');
-    		    header("Location: ".base_url()."/archanai/rasi");
+    		    return redirect()->to(base_url()."/archanai/rasi");
     		}
 		}
 	}
@@ -296,10 +295,10 @@ class Archanai extends BaseController
 		$res = $this->db->table('rasi')->delete(['id' => $id]);
 		if($res){
 		    $this->session->setFlashdata('succ', 'Rasi Delete Successfully');
-		    header("Location: ".base_url()."/archanai/rasi");
+		    return redirect()->to(base_url()."/archanai/rasi");
 		}else{
 		    $this->session->setFlashdata('fail', 'Please Try Again');
-		    header("Location: ".base_url()."/archanai/rasi");
+		    return redirect()->to(base_url()."/archanai/rasi");
 		}
 	}
 	
@@ -353,20 +352,20 @@ class Archanai extends BaseController
 		    $builder = $this->db->table('natchathram')->insert($data);
 		    if($builder){
     		    $this->session->setFlashdata('succ', 'Natchathiram Added Successfully');
-    		    header("Location: ".base_url()."/archanai/natchathiram");
+    		    return redirect()->to(base_url()."/archanai/natchathiram");
     		}else{
     		    $this->session->setFlashdata('fail', 'Please Try Again');
-    		    header("Location: ".base_url()."/archanai/natchathiram");
+    		    return redirect()->to(base_url()."/archanai/natchathiram");
     		}
 		}else{
             $data['modified' ] = date('Y-m-d H:i:s');
             $builder = $this->db->table('natchathram')->where('id', $id)->update($data);
 		    if($builder){
     		    $this->session->setFlashdata('succ', 'Natchathiram Update Successfully');
-    		    header("Location: ".base_url()."/archanai/natchathiram");
+    		    return redirect()->to(base_url()."/archanai/natchathiram");
     		}else{
     		    $this->session->setFlashdata('fail', 'Please Try Again');
-    		    header("Location: ".base_url()."/archanai/natchathiram");
+    		    return redirect()->to(base_url()."/archanai/natchathiram");
     		}
 		}
 	}
@@ -403,10 +402,10 @@ class Archanai extends BaseController
 		$res = $this->db->table('natchathram')->delete(['id' => $id]);
 		if($res){
 		    $this->session->setFlashdata('succ', 'Rasi Delete Successfully');
-		    header("Location: ".base_url()."/archanai/natchathiram");
+		    return redirect()->to(base_url()."/archanai/natchathiram");
 		}else{
 		    $this->session->setFlashdata('fail', 'Please Try Again');
-		    header("Location: ".base_url()."/archanai/natchathiram");
+		    return redirect()->to(base_url()."/archanai/natchathiram");
 		}
 	}
 
@@ -437,7 +436,7 @@ class Archanai extends BaseController
 		}else{
 			$this->session->setFlashdata('fail', 'Please Fill Category'); 
 		}
-		header("Location: ".base_url()."/archanai/group_list");
+		return redirect()->to(base_url()."/archanai/group_list");
 	}
 	
 	public function edit_group(){
@@ -472,7 +471,7 @@ class Archanai extends BaseController
 			if($res){$this->session->setFlashdata('succ', 'Group Delete Successfully');}
 			else{ $this->session->setFlashdata('fail', 'Please Try Again');}
 		}
-		header("Location: ".base_url()."/archanai/group_list");
+		return redirect()->to(base_url()."/archanai/group_list");
 	}
 	public function diety_list() {
 		$data['list'] = $this->db->table('archanai_diety')->get()->getResultArray();
@@ -511,7 +510,7 @@ class Archanai extends BaseController
 		}else{
 			$this->session->setFlashdata('fail', 'Please Fill Category'); 
 		}
-		header("Location: ".base_url()."/archanai/diety_list");
+		return redirect()->to(base_url()."/archanai/diety_list");
 	}
 	public function edit_diety(){
 	    $id=  $this->request->uri->getSegment(3);
@@ -545,7 +544,7 @@ class Archanai extends BaseController
 			if($res){$this->session->setFlashdata('succ', 'Diety Delete Successfully');}
 			else{ $this->session->setFlashdata('fail', 'Please Try Again');}
 		}
-		header("Location: ".base_url()."/archanai/diety_list");
+		return redirect()->to(base_url()."/archanai/diety_list");
 	}
 	
 	

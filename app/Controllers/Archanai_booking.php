@@ -332,6 +332,14 @@ class Archanai_booking extends BaseController
 						$this->db->table('archanai_booking_vehicle')->insert($data_arch_vehicle);
 					}
 				}
+				if (!empty($_POST['product'])) {
+					foreach ($_POST['product'] as $product) {
+						if (trim($product['name']) === '') continue;
+						$data_arch_product['archanai_booking_id'] = $arch_book_id;
+						$data_arch_product['name'] = trim($product['name']);
+						$this->db->table('archanai_booking_product')->insert($data_arch_product);
+					}
+				}
 				$payment_gateway_data = array();
 				$payment_gateway_data['archanai_booking_id'] = $arch_book_id;
 				$payment_gateway_data['pay_method'] = $pay_method;
@@ -843,6 +851,10 @@ class Archanai_booking extends BaseController
 					->select('archanai_booking_vehicle.*')
 					->get()
 					->getResultArray();
+				$data['products'] = $this->db->table('archanai_booking_product')
+					->where('archanai_booking_product.archanai_booking_id', $id)
+					->get()
+					->getResultArray();
 
 				//echo $this->db->getLastQuery();
 				//echo "<pre>"; print_r($data); exit();
@@ -887,6 +899,10 @@ class Archanai_booking extends BaseController
 								->select('archanai_booking_vehicle.*')
 								->get()
 								->getResultArray();
+							$data['products'] = $this->db->table('archanai_booking_product')
+								->where('archanai_booking_product.archanai_booking_id', $id)
+								->get()
+								->getResultArray();
 							echo view($view_file, $data);
 						} else {
 							$archanai_booking_up_data = array();
@@ -927,6 +943,10 @@ class Archanai_booking extends BaseController
 			$data['vehicles'] = $this->db->table('archanai_booking_vehicle')
 				->where('archanai_booking_vehicle.archanai_booking_id', $id)
 				->select('archanai_booking_vehicle.*')
+				->get()
+				->getResultArray();
+			$data['products'] = $this->db->table('archanai_booking_product')
+				->where('archanai_booking_product.archanai_booking_id', $id)
 				->get()
 				->getResultArray();
 			echo view($view_file, $data);
@@ -990,6 +1010,10 @@ class Archanai_booking extends BaseController
 		$data['vehicles'] = $this->db->table('archanai_booking_vehicle')
 			->where('archanai_booking_vehicle.archanai_booking_id', $id)
 			->select('archanai_booking_vehicle.*')
+			->get()
+			->getResultArray();
+		$data['products'] = $this->db->table('archanai_booking_product')
+			->where('archanai_booking_product.archanai_booking_id', $id)
 			->get()
 			->getResultArray();
 		$url = "https://maps.app.goo.gl/SyWKRkVEzrTDa1BB8";

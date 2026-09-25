@@ -459,7 +459,7 @@
                         <div class="card">
                           <a href="#" data-product_id="<?php echo $row['id']; ?>"
                             data-name="<?php echo str_replace(' ', '_', strtolower($row['name_eng'])) . "(" . $row['diety_name'] . ")"; ?>"
-                            data-price="<?php echo number_format((float) ($row['amount']), 2); ?>" class="add-to-cart"
+                            data-price="<?php echo number_format((float) ($row['amount']), 2, '.', ''); ?>" class="add-to-cart"
                             data-src="<?php echo base_url(); ?>/uploads/archanai/<?php echo $row['image']; ?>"
                             data-category="<?php echo $row['archanai_category']; ?>" data-diety_id="<?php if (!empty($row['diety_id'])) {
                                  echo $row['diety_id'];
@@ -611,6 +611,32 @@
                                   <th style="width: 50%;">Vehicle No</th>
                                 </thead>
                                 <tbody class="vehicle-body">
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          <div id="product_input_box" class="col-md-12" style="display:none;">
+                            <div class="row">
+                              <div class="col-md-8">
+                                <div class="form-group">
+                                  <input type="text" id="prd_name" placeholder="Application Name"
+                                    class="form-control" />
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <button type="button" id="prd_add_btn" class="btn btn-info form-control">Add</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="product_table_box" class="" style="display:none;">
+                            <input type="hidden" value="0" name="cnt_product" id="count_product">
+                            <div class="cart_tab_outer12 col-md-12">
+                              <table class="product-table">
+                                <thead>
+                                  <th style="width:100%;">Application Name</th>
+                                </thead>
+                                <tbody class="product-body">
                                 </tbody>
                               </table>
                             </div>
@@ -968,23 +994,28 @@
     }
 
     .vehicle-table thead,
-    tbody.vehicle-body tr {
+    tbody.vehicle-body tr,
+    .product-table thead,
+    tbody.product-body tr {
       display: table;
       width: 100%;
       table-layout: fixed;
     }
 
-    .vehicle-table th {
+    .vehicle-table th,
+    .product-table th {
       font-size: 12px;
       text-align: left;
       background: #fcf8eb;
     }
 
-    .vehicle-table td {
+    .vehicle-table td,
+    .product-table td {
       font-size: 12px;
     }
 
-    .vehicle-body {
+    .vehicle-body,
+    .product-body {
       overflow: auto;
       height: 90px;
       display: block;
@@ -1257,6 +1288,21 @@
         else {
           $("#vehicle_input_box").css({ "display": "none" });
           $("#vehicle_table_box").css({ "display": "none" });
+        }
+
+        var product_check = 0;
+        $(".archanai_category").each(function () {
+          if (parseInt($(this).val()) == 4) {
+            product_check++;
+          }
+        });
+        if (product_check > 0) {
+          $("#product_input_box").css({ "display": "block" });
+          $("#product_table_box").css({ "display": "block" });
+        }
+        else {
+          $("#product_input_box").css({ "display": "none" });
+          $("#product_table_box").css({ "display": "none" });
         }
       }
       $(function () {
@@ -1761,6 +1807,25 @@
           $('#vle_name').val("");
           $('#vle_no_name').val("");
         }
+      });
+      $('#prd_add_btn').on('click', function () {
+        var prd_name = $.trim($('#prd_name').val());
+        if (prd_name == "") return;
+        var idx = parseInt($('#count_product').val());
+        var $row = $('<tr class="prd-row"></tr>');
+        var $cell = $('<td style="width:88%;word-break:break-word;"></td>');
+        $cell.append($('<input type="hidden">').attr('name', 'product[' + idx + '][name]').val(prd_name));
+        $cell.append(document.createTextNode(prd_name));
+        var $act = $('<td style="width:12%;text-align:right;"></td>');
+        $act.append($('<a href="#" class="prd-remove" title="Remove" style="color:#dc3545;"><i class="fa fa-minus-circle"></i></a>'));
+        $row.append($cell).append($act);
+        $('.product-table .product-body').append($row);
+        $('#count_product').val(idx + 1);
+        $('#prd_name').val("");
+      });
+      $(document).on('click', '.prd-remove', function (e) {
+        e.preventDefault();
+        $(this).closest('tr').remove();
       });
       function save_archanai(sep_print = 0) {
         $.ajax
