@@ -59,11 +59,12 @@ input[type=number] {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <!-- Application Fee hidden for now (not in use) — kept for future use -->
+                                <div class="col-sm-6" style="display:none;">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="number" step="0.1" name="application_fee" class="form-control" step=".01" min="0" value="<?= $data['application_fee'] ?? '' ?>" <?php echo $readonly; ?> required>
-                                            <label class="form-label">Application Fee <span style="color: red;">*</span></label>
+                                            <input type="number" step="0.1" name="application_fee" class="form-control" step=".01" min="0" value="<?= $data['application_fee'] ?? '0' ?>" <?php echo $readonly; ?>>
+                                            <label class="form-label">Application Fee</label>
                                         </div>
                                     </div>
                                 </div>

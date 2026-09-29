@@ -129,14 +129,7 @@
             <p><b>Amount(SGD) : </b>
             <?php echo number_format((float) $qry1['payment'], 2, '.', ','); ?>
             </p>
-            <?php if (!empty($qry1['application_fee'])): ?>
-            <p><b>Application Fee(SGD) : </b>
-            <?php echo number_format((float) $qry1['application_fee'], 2, '.', ','); ?>
-            </p>
-            <p><b>Total Amount(SGD) : </b>
-            <?php echo number_format((float) ($qry1['total_amount'] ?: $qry1['payment']), 2, '.', ','); ?>
-            </p>
-            <?php endif; ?>
+            <?php /* Application Fee / Total Amount lines hidden for now (not in use) - kept for future use */ ?>
             <br>
             <hr>
         </div>
@@ -187,14 +180,7 @@
             <p><b>Amount(SGD) : </b>
             <?php echo number_format((float) $qry1['payment'], 2, '.', ','); ?>
             </p>
-            <?php if (!empty($qry1['application_fee'])): ?>
-            <p><b>Application Fee(SGD) : </b>
-            <?php echo number_format((float) $qry1['application_fee'], 2, '.', ','); ?>
-            </p>
-            <p><b>Total Amount(SGD) : </b>
-            <?php echo number_format((float) ($qry1['total_amount'] ?: $qry1['payment']), 2, '.', ','); ?>
-            </p>
-            <?php endif; ?>
+            <?php /* Application Fee / Total Amount lines hidden for now (not in use) - kept for future use */ ?>
             <br>
             <hr>
         </div>

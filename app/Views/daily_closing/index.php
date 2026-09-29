@@ -14,7 +14,7 @@
 				<div class="card">
 					<div class="header">
 						<form action="<?php echo base_url(); ?>/dailyclosing" method="post">
-    <div class="row" style="align-items: center;">
+    <div class="row" style="display:flex;align-items:center;">
         <div class="col-md-2">
             <label>From Date</label>
             <input type="date" name="dailyclosing_start_date" id="dailyclosing_start_date"
@@ -52,6 +52,14 @@
                 <button type="button" class="btn bg-deep-purple waves-effect">Print</button>
             </a>
         </div>
+        <?php if (!empty($_SESSION['role']) && $_SESSION['role'] == 1) { ?>
+        <div class="col-md-2" align="right" style="padding-top:20px;">
+            <a href="<?php echo base_url(); ?>/dailyclosing/summary_print_a4/<?php echo strtotime($dailyclosing_start_date); ?>/<?php echo strtotime($dailyclosing_end_date); ?>"
+                target="_blank">
+                <button type="button" class="btn bg-orange waves-effect" title="Shows all counters/staff, regardless of the Login User filter above">Daily Sales Report</button>
+            </a>
+        </div>
+        <?php } ?>
     </div>
 </form>
 					</div>

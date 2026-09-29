@@ -106,6 +106,57 @@ class Dailyclosing extends BaseController
     echo view('daily_closing/index', $data);
     echo view('template/footer');
 }
+
+	// Admin-only: Daily Sales Report across ALL counters/staff for the date range,
+	// regardless of who is logged in (no login_id filter applied).
+	public function summary_print_a4($fromdate, $todate)
+	{
+		if ($this->session->get('role') != 1) {
+			return redirect()->to(base_url() . '/dashboard');
+		}
+
+		if (!empty($fromdate)) $dailyclosing_start_date = date('Y-m-d', $fromdate);
+		else $dailyclosing_start_date = date("Y-m-d");
+		if (!empty($todate)) $dailyclosing_end_date = date('Y-m-d', $todate);
+		else $dailyclosing_end_date = date("Y-m-d");
+
+		$login_id = '';
+
+		$archanai_data_online = daily_archanai_booking_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id, $group_id = 54);
+		$archanai_diety_data_online = daily_diety_archanai_booking_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['archanai_details'] = $archanai_data_online;
+		$data['archanai_diety_details'] = $archanai_diety_data_online;
+		$hallbooking_data_online = daily_hall_booking_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['hallbooking_details'] = $hallbooking_data_online;
+		$ubayam_data = daily_ubayam_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['ubayam_details'] = $ubayam_data;
+		$donation_data = daily_donation_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['donation_details'] = $donation_data;
+		$prasadam_data = daily_prasadam_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['prasadam_details'] = $prasadam_data;
+		$annathanam_data = daily_annathanam_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['annathanam_details'] = $annathanam_data;
+		$kattalai_archanai_data = daily_kattalai_archanai_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "COUNTER", $login_id);
+		$data['Kattalai_archanai_details'] = $kattalai_archanai_data;
+		$outdoor_services_data = daily_outdoor_services_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "COUNTER", $login_id);
+		$data['outdoor_services_details'] = $outdoor_services_data;
+		$product_offering_data = daily_product_offering_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "COUNTER", $login_id);
+		$data['product_offering_details'] = $product_offering_data;
+		$catering_data = daily_catering_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "COUNTER", $login_id);
+		$data['catering_details'] = $catering_data;
+		$member_data = daily_member_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['member_details'] = $member_data;
+		$data['temp_details'] = $this->db->table('admin_profile')->where('id', 1)->get()->getRowArray();
+		$data['dailyclosing_start_date'] = $dailyclosing_start_date;
+		$data['dailyclosing_end_date'] = $dailyclosing_end_date;
+		$data['coin_denominations'] = $this->db->query("SELECT max(cv.name) as name, sum(cv.value * cd.quantity) as amount, max(cd.coin_key) as coin_key, sum(cd.quantity) as quantity, sum(cv.value * cd.c_quantity) as c_amount,  max(cd.c_quantity) as c_quantity FROM `coin_denomination` cd left join coin_value cv on cv.key = cd.coin_key where cd.date >= '$dailyclosing_start_date' and cd.date >= '$dailyclosing_end_date' group by coin_key order by cv.order_no")->getResult();
+		$data['floating_cash'] = $this->db->query("SELECT sum(amount) as amount, checked_by FROM `floating_cash` WHERE date >= '$dailyclosing_start_date' AND date <= '$dailyclosing_end_date' GROUP BY checked_by")->getRowArray();
+		$repayment_data = daily_repayment_data_withcurrentdate($dailyclosing_start_date, $dailyclosing_end_date, $booking_type = "", $login_id);
+		$data['repayment_details'] = $repayment_data;
+
+		echo view('frontend/daily_closing/summary_print_a4', $data);
+	}
+
 	public function print($fromdate,$todate){
 		$tmpid = $this->session->get('profile_id');
 		if(!empty($fromdate)) $dailyclosing_start_date = date('Y-m-d', $fromdate);

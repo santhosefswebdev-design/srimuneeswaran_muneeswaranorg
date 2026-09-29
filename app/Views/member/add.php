@@ -210,11 +210,12 @@ if($edit == true){
                                         </div>
                                     </div>
                                     <div style="clear:both"></div>
-                                    <div class="col-sm-6">
+                                    <!-- Application Fee hidden for now (not in use) — kept for future use -->
+                                    <div class="col-sm-6" style="display:none;">
                                         <div class="form-group form-float">
                                             <div class="form-line">
                                                 <input type="number" step="0.1" id="application_fee" name="application_fee"
-                                                    class="form-control" step=".01" min="0" value="<?= $data['application_fee'] ?? '0.00' ?>"
+                                                    class="form-control" step=".01" min="0" value="0.00"
                                                     <?php echo $readonly; ?> <?php echo $readonly_edit; ?>>
                                                 <label class="form-label">Application Fee</label>
                                             </div>
@@ -263,7 +264,8 @@ if($edit == true){
                                         </div>
                                     </div>
                                     <div style="clear:both"></div>
-                                    <div class="col-sm-12" align="center">
+                                    <!-- Total Amount box hidden for now (not in use) — kept for future use -->
+                                    <div class="col-sm-12" align="center" style="display:none;">
                                         <div class="form-group">
                                             <h4 style="margin-bottom:5px; margin-top:5px; color:#FFFFFF; background:#d4aa00;">Total
                                                 Amount</h4>

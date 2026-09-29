@@ -1039,11 +1039,7 @@ if (count($member_details) > 0) {
 					<p style="margin:2px 0px;font-size:10px;font-weight:bold;">
 						<?php echo number_format($member_detail['payment'], 2); ?>
 					</p>
-					<?php if (!empty($member_detail['application_fee'])) { ?>
-					<p style="margin:0px;font-size:8px;">
-						(incl. fee <?php echo number_format($member_detail['application_fee'], 2); ?>)
-					</p>
-					<?php } ?>
+					<?php // Application Fee note hidden for now (not in use) — kept for future use ?>
 				</td>
 			</tr>
 			<?php

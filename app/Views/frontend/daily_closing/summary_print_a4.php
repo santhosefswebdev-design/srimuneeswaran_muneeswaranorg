@@ -1700,8 +1700,6 @@ $summary_total['offering'] = array();
 														<th style="padding: 5px 10px!important;">Payment Mode</th>
 														<th style="padding: 5px 10px!important;text-align:right;">Amount
 															(S$)</th>
-														<th style="padding: 5px 10px!important;text-align:right;">Application Fee
-															(S$)</th>
 														<th style="padding: 5px 10px!important;text-align:right;">Total Amount
 															(S$)</th>
 													</tr>
@@ -1754,9 +1752,6 @@ $summary_total['offering'] = array();
 																<?php echo number_format($member_detail['payment'], 2); ?>
 															</td>
 															<td style="padding: 5px 10px!important;text-align:right;">
-																<?php echo number_format($member_detail['application_fee'] ?? 0, 2); ?>
-															</td>
-															<td style="padding: 5px 10px!important;text-align:right;">
 																<?php echo number_format($member_collected, 2); ?>
 															</td>
 														</tr>
@@ -1767,7 +1762,7 @@ $summary_total['offering'] = array();
 												</tbody>
 												<tfoot>
 													<tr>
-														<td colspan="7">&nbsp;</td>
+														<td colspan="6">&nbsp;</td>
 														<td
 															style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
 															<?php echo number_format($member_total, 2); ?>

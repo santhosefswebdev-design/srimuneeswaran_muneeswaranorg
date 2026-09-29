@@ -1175,7 +1175,6 @@ select.input { color:#000; }
 														<th style="padding: 5px 10px!important;">Mobile</th>
 														<th colspan="4" style="padding: 5px 10px!important;">Payment Mode</th>
 														<th style="padding: 5px 10px!important;text-align:right;">Amount (S$)</th>
-														<th style="padding: 5px 10px!important;text-align:right;">Application Fee (S$)</th>
 														<th style="padding: 5px 10px!important;text-align:right;">Total Amount (S$)</th>
 													</tr>
 												</thead>
@@ -1217,9 +1216,6 @@ select.input { color:#000; }
 																<?php echo number_format($member_detail['payment'], 2); ?>
 															</td>
 															<td style="padding: 5px 10px!important;text-align:right;">
-																<?php echo number_format($member_detail['application_fee'] ?? 0, 2); ?>
-															</td>
-															<td style="padding: 5px 10px!important;text-align:right;">
 																<?php echo number_format($member_collected, 2); ?>
 															</td>
 														</tr>
@@ -1230,7 +1226,7 @@ select.input { color:#000; }
 												</tbody>
 												<tfoot>
 													<tr>
-														<td colspan="9">&nbsp;</td>
+														<td colspan="8">&nbsp;</td>
 														<td colspan="4" style="padding: 5px 10px!important;text-align:right;font-weight:bold;">
 															<?php echo number_format($member_total, 2); ?>
 														</td>

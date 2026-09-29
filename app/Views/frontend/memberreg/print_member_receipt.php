@@ -216,12 +216,7 @@
         <td><?php echo $member['type_name']; ?> Membership Fee</td>
         <td style="text-align: right;">SGD <?php echo number_format($member['payment'], 2); ?></td>
     </tr>
-    <?php if (!empty($member['application_fee'])) { ?>
-    <tr class="info-row">
-        <td>Application Fee</td>
-        <td style="text-align: right;">SGD <?php echo number_format($member['application_fee'], 2); ?></td>
-    </tr>
-    <?php } ?>
+    <?php // Application Fee line hidden for now (not in use) — kept for future use ?>
     <tr class="info-row">
         <td class="label">Total Amount:</td>
         <td style="text-align: right;"><strong>SGD <?php echo number_format($member['total_amount'] ?: $member['payment'], 2); ?></strong></td>

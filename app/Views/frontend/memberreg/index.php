@@ -258,16 +258,17 @@
                                 <input type="number" step="0.1" readonly id="payment" name="payment"
                                   class="form-control" step=".01" min="0" required>
                               </div>
-                              <div class="form-group"><label class="form-label">Application Fee</label>
+                              <!-- Application Fee / Total Amount hidden for now (not in use) — kept for future use -->
+                              <div class="form-group" style="display:none;"><label class="form-label">Application Fee</label>
                                 <input type="number" step="0.1" readonly id="application_fee" name="application_fee"
                                   class="form-control" step=".01" min="0">
                               </div>
-                              <div class="form-group">
+                              <div class="form-group" style="display:none;">
                                 <h4 style="margin-bottom:5px; margin-top:5px; color:#FFFFFF; background:#d4aa00;">Total
                                   Amount</h4>
                                 <input type="number" step="0.1" readonly id="total_amount" name="total_amount"
                                   class="form-control" step=".01" min="0"
-                                  style="margin-top:20px;font-weight:bold;font-size: 36px;text-align: center;" required>
+                                  style="margin-top:20px;font-weight:bold;font-size: 36px;text-align: center;">
                               </div>
                             </div>
 

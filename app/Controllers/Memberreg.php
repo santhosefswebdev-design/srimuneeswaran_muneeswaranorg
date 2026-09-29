@@ -102,8 +102,10 @@ class Memberreg extends BaseController
 			$data['end_date'] = $endDate;
 		}
 		$data['payment'] = max(0, trim($_POST['payment']));
-		$data['application_fee'] = !empty($_POST['application_fee']) ? max(0, trim($_POST['application_fee'])) : 0.00;
-		$data['total_amount'] = (float) $data['payment'] + (float) $data['application_fee'];
+		// Application fee feature is not in use currently — not deducted/added anywhere.
+		// Kept in the schema for future use; always stored as 0 for now.
+		$data['application_fee'] = 0.00;
+		$data['total_amount'] = (float) $data['payment'];
 		$pay_method = !empty($_POST['pay_method']) ? trim($_POST['pay_method']) : 'cash';
 		$data['added_by'] = $this->session->get('log_id_frend');
 		$data['paid_through'] = "COUNTER";

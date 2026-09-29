@@ -122,9 +122,10 @@ class Member extends BaseController
 		$data['payment_status'] = 2;
 
 		if (empty($id)) {
-			// Application fee is a one-time charge at initial registration only (not on renewal/edit).
-			$data['application_fee'] = !empty($_POST['application_fee']) ? max(0, trim($_POST['application_fee'])) : 0.00;
-			$data['total_amount'] = (float) $data['payment'] + (float) $data['application_fee'];
+			// Application fee feature is not in use currently — not deducted/added anywhere.
+			// Kept in the schema for future use; always stored as 0 for now.
+			$data['application_fee'] = 0.00;
+			$data['total_amount'] = (float) $data['payment'];
 			$query = $this->db->query("select max(member_no) as member_no from member")->getRowArray();
 			$data['member_no'] = sprintf("%06d", (((float) substr($query['member_no'], -5)) + 1));
 			$data['created'] = date('Y-m-d H:i:s');
