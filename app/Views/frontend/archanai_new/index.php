@@ -942,6 +942,94 @@
   </div>
   <!-- REPRINT SECTION END -->
 
+  <!-- BOOKING DATE CHANGE CONFIRM -->
+  <style>
+    #date_change_modal .modal-content {
+      border: 0;
+      border-radius: 18px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, .28);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    #date_change_modal .dcm-icon {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: #fff4dc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #date_change_modal .dcm-icon i { font-size: 44px; line-height: 1; color: #f0a30a; }
+    #date_change_modal .dcm-title { margin: 0 0 6px; font-size: 24px; font-weight: 700; color: #1f2937; }
+    #date_change_modal .dcm-sub { margin: 0 0 22px; font-size: 15px; color: #6b7280; }
+    #date_change_modal .dcm-dates {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    #date_change_modal .dcm-date {
+      flex: 1;
+      max-width: 190px;
+      padding: 12px 8px;
+      border-radius: 14px;
+      background: #f3f4f6;
+    }
+    #date_change_modal .dcm-date.dcm-new { background: #e8f1fc; box-shadow: inset 0 0 0 2px #4590e0; }
+    #date_change_modal .dcm-label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9ca3af; }
+    #date_change_modal .dcm-new .dcm-label { color: #4590e0; }
+    #date_change_modal .dcm-value { font-size: 22px; font-weight: 700; color: #4b5563; }
+    #date_change_modal .dcm-new .dcm-value { color: #1f5fa8; }
+    #date_change_modal .dcm-day { font-size: 13px; color: #9ca3af; }
+    #date_change_modal .dcm-arrow { font-size: 26px; line-height: 1; color: #9ca3af; }
+    #date_change_modal .dcm-actions { display: flex; gap: 12px; }
+    #date_change_modal .dcm-btn {
+      flex: 1;
+      height: 52px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: .03em;
+    }
+    #date_change_modal .dcm-btn-no { background: #eef0f4; color: #374151; }
+    #date_change_modal .dcm-btn-yes { background: #4590e0; color: #fff; box-shadow: 0 6px 16px rgba(69, 144, 224, .4); }
+  </style>
+  <div id="date_change_modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:480px;">
+      <div class="modal-content">
+        <div class="modal-body text-center" style="padding:32px 28px 28px;">
+          <div class="dcm-icon"><i class="mdi mdi-calendar-alert"></i></div>
+          <h4 class="dcm-title">Confirm date change</h4>
+          <p class="dcm-sub">The booking date will be changed.</p>
+          <div class="dcm-dates">
+            <div class="dcm-date">
+              <div class="dcm-label">Current</div>
+              <div class="dcm-value" id="date_change_from"></div>
+              <div class="dcm-day" id="date_change_from_day"></div>
+            </div>
+            <i class="mdi mdi-arrow-right dcm-arrow"></i>
+            <div class="dcm-date dcm-new">
+              <div class="dcm-label">New</div>
+              <div class="dcm-value" id="date_change_to"></div>
+              <div class="dcm-day" id="date_change_to_day"></div>
+            </div>
+          </div>
+          <div class="dcm-actions">
+            <button type="button" class="dcm-btn dcm-btn-no" id="date_change_no" data-dismiss="modal">No, keep</button>
+            <button type="button" class="dcm-btn dcm-btn-yes" id="date_change_yes">Yes, change</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- BOOKING DATE CHANGE CONFIRM END -->
+
   <script src="<?php echo base_url(); ?>/assets/archanai/js/jquery.min.js"></script>
   <!-- base:js -->
   <script src="<?php echo base_url(); ?>/assets/archanai/vendors/js/vendor.bundle.base.js"></script>
@@ -1305,6 +1393,100 @@
           $("#product_table_box").css({ "display": "none" });
         }
       }
+
+      // Keep the booking date in sync with the real current date, so a tab
+      // left open overnight (or across a long idle period) can't silently
+      // submit a stale/past date. Only touches the field when it isn't
+      // focused, so it never fights an operator actively using the picker.
+      // A past date the operator has explicitly confirmed (see the confirm
+      // popup below) is left alone; only an unconfirmed stale date is reset.
+      var confirmedBookingDate = null;
+      var bookingDateOverridden = false;
+      function getTodayString() {
+        var now = new Date();
+        var yyyy = now.getFullYear();
+        var mm = String(now.getMonth() + 1).padStart(2, '0');
+        var dd = String(now.getDate()).padStart(2, '0');
+        return yyyy + '-' + mm + '-' + dd;
+      }
+      function syncBookingDateToToday() {
+        var $dateField = $("#date");
+        if (!$dateField.length || $dateField.is(":focus")) return;
+        var today = getTodayString();
+        if ($dateField.val() !== today && !bookingDateOverridden) {
+          $dateField.attr('max', today).val(today);
+          confirmedBookingDate = today;
+        } else if ($dateField.attr('max') !== today) {
+          $dateField.attr('max', today);
+        }
+      }
+      $(function () {
+        syncBookingDateToToday();
+        setInterval(syncBookingDateToToday, 60000);
+        document.addEventListener('visibilitychange', function () {
+          if (!document.hidden) syncBookingDateToToday();
+        });
+      });
+
+      // Ask before the booking date is changed, so an accidental pick or
+      // keystroke can't silently back-date a booking. A centered modal asks
+      // Yes / No and can only be closed with those buttons (static backdrop,
+      // no Esc). The field goes straight back to the last confirmed date and
+      // only takes the new one on "Yes". The short debounce lets a typed date
+      // finish (the browser fires "change" per keystroke) before the modal
+      // appears.
+      $(function () {
+        var $dateField = $("#date");
+        if (!$dateField.length) return;
+        var $modal = $("#date_change_modal");
+        var confirmTimer = null;
+        var pendingDate = null;
+        function formatDmy(ymd) {
+          var p = ymd.split('-');
+          return p[2] + '-' + p[1] + '-' + p[0];
+        }
+        function weekdayOf(ymd) {
+          var p = ymd.split('-');
+          return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-GB', { weekday: 'long' });
+        }
+        function applyBookingDate(newDate) {
+          $dateField.val(newDate);
+          confirmedBookingDate = newDate;
+          bookingDateOverridden = (newDate !== getTodayString());
+        }
+        confirmedBookingDate = $dateField.val();
+        $dateField.on('change', function () {
+          clearTimeout(confirmTimer);
+          confirmTimer = setTimeout(function () {
+            var newDate = $dateField.val();
+            if (newDate === confirmedBookingDate) return;
+            $dateField.val(confirmedBookingDate);
+            if (!newDate || newDate > $dateField.attr('max')) return;
+            pendingDate = newDate;
+            $("#date_change_from").text(formatDmy(confirmedBookingDate));
+            $("#date_change_from_day").text(weekdayOf(confirmedBookingDate));
+            $("#date_change_to").text(formatDmy(newDate));
+            $("#date_change_to_day").text(weekdayOf(newDate));
+            $modal.modal("show");
+          }, 500);
+        });
+        // Bootstrap ignores a hide issued while the modal is still fading in,
+        // so if an answer was given that early, close it as soon as it's shown.
+        $modal.on('shown.bs.modal', function () {
+          if (pendingDate === null) $modal.modal("hide");
+        });
+        $("#date_change_yes").on('click', function () {
+          if (pendingDate) applyBookingDate(pendingDate);
+          pendingDate = null;
+          $modal.modal("hide");
+        });
+        $("#date_change_no").on('click', function () {
+          pendingDate = null;
+        });
+        $modal.on('hidden.bs.modal', function () {
+          pendingDate = null;
+        });
+      });
       $(function () {
         var filterList = {
           init: function () {
